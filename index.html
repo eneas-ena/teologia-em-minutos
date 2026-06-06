@@ -8,6 +8,9 @@
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 <meta name="apple-mobile-web-app-title" content="Teologia em Minutos" />
+<link rel="icon" type="image/png" href="icon-192.png" />
+<link rel="apple-touch-icon" href="apple-touch-icon.png" />
+<link rel="manifest" href="manifest.json" />
 <title>Teologia em Minutos — Igreja Vidas</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@400;500;600&display=swap');
@@ -105,7 +108,7 @@
 .tm-spark svg{color:var(--gold);}
 .tm-tag{font-size:11px;background:var(--soft);color:var(--green-d);padding:4px 11px;border-radius:20px;font-weight:500;}
 .tm-qasked{font-family:var(--fd);font-style:italic;font-size:16px;color:var(--green);margin-bottom:10px;}
-.tm-md{font-family:var(--fd);font-size:18px;line-height:1.5;color:#3a382f;}
+.tm-md{font-family:var(--fd);font-size:18px;line-height:1.5;color:var(--ink);}
 .tm-p{margin:0 0 10px;}
 .tm-h3{font-family:var(--fd);font-weight:600;font-size:20px;color:var(--green);margin:14px 0 6px;}
 .tm-h4{font-family:var(--fd);font-weight:600;font-size:18px;color:var(--gold-d);margin:12px 0 4px;}
@@ -129,7 +132,7 @@
 .tm-vloading{font-family:var(--fd);font-style:italic;color:var(--muted);font-size:15px;padding:6px 0;}
 .tm-verse{margin-bottom:14px;}
 .tm-verse-ref{display:flex;align-items:center;gap:5px;font-family:var(--fu);font-size:12px;font-weight:600;color:var(--gold-d);margin-bottom:2px;}
-.tm-verse-txt{font-family:var(--fd);font-size:17px;color:#3a382f;line-height:1.45;}
+.tm-verse-txt{font-family:var(--fd);font-size:17px;color:var(--ink);line-height:1.45;}
 
 /* footnote */
 .tm-footnote{text-align:center;font-family:var(--fd);font-style:italic;font-size:14px;
@@ -199,10 +202,34 @@
   box-shadow:0 8px 18px rgba(31,74,59,.35);transition:.2s;}
 .tm-navplus:hover{background:var(--green-d);}
 .tm-sharebox{width:100%;min-height:170px;border:1px solid var(--line);border-radius:14px;background:var(--card);
-  padding:12px;font-family:var(--fd);font-size:15px;color:#3a382f;line-height:1.45;resize:none;outline:none;margin-bottom:12px;}
+  padding:12px;font-family:var(--fd);font-size:15px;color:var(--ink);line-height:1.45;resize:none;outline:none;margin-bottom:12px;}
 .tm-copybtn{width:100%;display:flex;align-items:center;justify-content:center;gap:8px;background:var(--green);color:#fff;
   border:none;padding:14px;border-radius:28px;font-family:var(--fu);font-size:14px;font-weight:500;cursor:pointer;}
 .tm-copybtn:hover{background:var(--green-d);}
+
+/* botão de tema no cabeçalho */
+.tm-headright{display:flex;align-items:center;gap:10px;}
+.tm-theme-btn{width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--card);
+  color:var(--gold-d);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.18s;}
+.tm-theme-btn:hover{border-color:var(--gold);}
+
+/* ===== MODO ESCURO ===== */
+html.dark{
+  --bg:#16120D; --card:#211C16; --card2:#2A241B;
+  --green:#7CBE9C; --green-d:#6BAE8C; --gold:#D7B665; --gold-d:#E3C57E;
+  --ink:#ECE5D6; --muted:#9C9384; --soft:#28392F; --line:#342D23;
+}
+html.dark, html.dark body{background:#100C08;}
+html.dark .tm-root{background:#100C08;}
+html.dark .tm-send,
+html.dark .tm-pill.sel,
+html.dark .tm-navplus,
+html.dark .tm-restile.act,
+html.dark .tm-copybtn,
+html.dark .tm-mic.on{background:#2E6B50;}
+html.dark .tm-send:hover,
+html.dark .tm-navplus:hover,
+html.dark .tm-copybtn:hover{background:#255A42;}
 
 /* ajustes para rodar como site/app independente */
 html,body{margin:0;padding:0;background:#EFE7D7;}
@@ -245,6 +272,8 @@ const ICONS = {
   'book-open': '<path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/>',
   quote: '<path d="M16 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2.5a.5.5 0 0 1 .5.5v1a2 2 0 0 1-2 2h-1a1 1 0 0 0-1 1v.5a.5.5 0 0 0 .5.5 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"/><path d="M5 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2.5a.5.5 0 0 1 .5.5v1a2 2 0 0 1-2 2h-1a1 1 0 0 0-1 1v.5a.5.5 0 0 0 .5.5 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"/>',
   check: '<path d="M20 6 9 17l-5-5"/>',
+  sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>',
+  moon: '<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>',
 };
 function Icon({ name, size = 24, fill = "none" }) {
   return React.createElement("svg", {
@@ -334,6 +363,12 @@ function App() {
   const [versesOpen, setVersesOpen] = useState(false);
   const [verses, setVerses] = useState(null);
   const [versesLoading, setVersesLoading] = useState(false);
+  const [theme, setTheme] = useState(() => loadLS("tem_theme", "light"));
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", theme === "dark");
+    saveLS("tem_theme", theme);
+  }, [theme]);
 
   const recRef = useRef(null);
   const inputRef = useRef(null);
@@ -446,14 +481,19 @@ function App() {
                 <div className="tm-greet-2">Que Deus abençoe o seu dia!</div>
               </div>
             </div>
-            <Emblem />
+            <div className="tm-headright">
+              <button className="tm-theme-btn" onClick={() => setTheme((t) => (t === "dark" ? "light" : "dark"))} title="Alternar modo claro/escuro">
+                <Icon name={theme === "dark" ? "sun" : "moon"} size={18} />
+              </button>
+              <Emblem />
+            </div>
           </div>
 
           {tab === "inicio" && (
             <>
               <div className="tm-title">
-                <span className="tm-title-1">Pergunte</span>
-                <span className="tm-title-2">sobre a Bíblia</span>
+                <span className="tm-title-1">Teologia</span>
+                <span className="tm-title-2">em Minutos</span>
                 <span className="tm-rule"><span className="tm-diamond">◆</span></span>
               </div>
 
