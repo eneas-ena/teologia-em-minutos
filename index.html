@@ -1,0 +1,633 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#1F4A3B" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-title" content="Teologia em Minutos" />
+<title>Teologia em Minutos — Igreja Vidas</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@400;500;600&display=swap');
+
+:root{
+  --bg:#EFE7D7; --card:#FBF7EF; --card2:#F6F0E4;
+  --green:#1F4A3B; --green-d:#173A2E; --gold:#BF9B49; --gold-d:#A8842F;
+  --ink:#2C2A24; --muted:#8A8270; --soft:#E4EAE2; --line:#E8DECB;
+  --fd:'Cormorant Garamond',Georgia,serif;
+  --fc:'Cinzel',Georgia,serif;
+  --fu:'Jost',system-ui,sans-serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+.tm-root{
+  display:flex;justify-content:center;align-items:flex-start;
+  min-height:100vh;padding:22px 14px;
+  background:
+    radial-gradient(120% 90% at 80% -10%, #f1e9d9 0%, #e7ddca 55%, #ddd0b8 100%);
+  font-family:var(--fu);color:var(--ink);
+}
+.tm-phone{
+  position:relative;width:100%;max-width:412px;height:min(880px,92vh);
+  background:var(--bg);border-radius:34px;overflow:hidden;
+  box-shadow:0 30px 70px rgba(40,30,10,.28), 0 2px 0 rgba(255,255,255,.4) inset;
+  display:flex;flex-direction:column;
+}
+.tm-scroll{flex:1;overflow-y:auto;padding:20px 18px 96px;}
+.tm-scroll::-webkit-scrollbar{width:0;}
+
+/* header */
+.tm-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.tm-greet{display:flex;gap:10px;align-items:center;}
+.tm-avatar{width:34px;height:34px;border-radius:10px;background:var(--card);
+  display:flex;align-items:center;justify-content:center;color:var(--green);
+  border:1px solid var(--line);}
+.tm-greet-1{font-family:var(--fd);font-weight:600;font-size:18px;color:var(--green);line-height:1;}
+.tm-greet-2{font-size:12px;color:var(--muted);margin-top:3px;}
+
+/* title */
+.tm-title{display:flex;flex-direction:column;align-items:center;margin:14px 0 16px;}
+.tm-title.sm{margin:10px 0 8px;}
+.tm-title-1{font-family:var(--fd);font-weight:600;font-size:46px;color:var(--green);line-height:.9;}
+.tm-title-2{font-family:var(--fd);font-weight:500;font-style:italic;font-size:34px;color:var(--gold-d);line-height:1;}
+.tm-rule{margin-top:8px;width:120px;border-top:1px solid var(--gold);position:relative;}
+.tm-diamond{position:absolute;top:-11px;left:50%;transform:translateX(-50%);color:var(--gold);font-size:9px;background:var(--bg);padding:0 6px;}
+
+/* cards */
+.tm-card{background:var(--card);border-radius:22px;border:1px solid rgba(231,222,203,.8);
+  box-shadow:0 8px 22px rgba(60,45,15,.06);}
+.tm-qcard{padding:20px 18px 16px;position:relative;margin-bottom:14px;}
+.tm-quote{color:var(--gold);opacity:.85;margin-bottom:4px;}
+.tm-input{width:100%;border:none;outline:none;resize:none;background:transparent;
+  font-family:var(--fd);font-size:24px;font-weight:600;color:var(--green);line-height:1.2;}
+.tm-input::placeholder{color:var(--green);opacity:.92;}
+.tm-qrow{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;margin-top:14px;}
+.tm-hint{display:flex;align-items:center;gap:9px;font-size:11.5px;color:var(--muted);white-space:pre-line;line-height:1.25;}
+.tm-mic{width:34px;height:34px;border-radius:9px;border:1px solid var(--line);background:var(--card2);
+  color:var(--green);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:0 0 auto;transition:.2s;}
+.tm-mic.on{background:var(--green);color:#fff;border-color:var(--green);animation:pulse 1.1s infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(31,74,59,.4);}50%{box-shadow:0 0 0 7px rgba(31,74,59,0);}}
+.tm-send{display:flex;align-items:center;gap:8px;background:var(--green);color:#fff;border:none;
+  padding:13px 18px;border-radius:30px;font-family:var(--fu);font-size:14px;font-weight:500;cursor:pointer;
+  box-shadow:0 6px 14px rgba(31,74,59,.28);transition:.2s;white-space:nowrap;}
+.tm-send:hover{background:var(--green-d);}
+.tm-send:disabled{opacity:.5;cursor:default;box-shadow:none;}
+.tm-micnote{margin-top:10px;font-size:12px;color:var(--gold-d);}
+
+/* pills */
+.tm-pills{display:flex;gap:5px;margin-bottom:18px;}
+.tm-pill{flex:1;min-width:0;display:flex;align-items:center;justify-content:center;gap:4px;
+  padding:10px 3px;border-radius:22px;border:1px solid var(--line);background:var(--card);color:var(--ink);
+  font-family:var(--fu);font-size:11.5px;cursor:pointer;white-space:nowrap;transition:.18s;}
+.tm-pill svg{flex:0 0 auto;}
+.tm-pill.sel{background:var(--green);color:#fff;border-color:var(--green);box-shadow:0 5px 12px rgba(31,74,59,.25);}
+
+/* section */
+.tm-section{display:flex;justify-content:space-between;align-items:baseline;margin:2px 2px 10px;}
+.tm-section-t{font-family:var(--fd);font-weight:600;font-size:20px;color:var(--ink);}
+
+/* recursos */
+.tm-res{display:flex;gap:8px;margin-bottom:18px;}
+.tm-restile{flex:1;min-width:0;background:var(--card);border:1px solid var(--line);border-radius:16px;
+  padding:13px 4px 10px;display:flex;flex-direction:column;align-items:center;gap:7px;
+  color:var(--green);cursor:pointer;font-family:var(--fu);font-size:9.5px;line-height:1.15;text-align:center;transition:.18s;}
+.tm-restile span{color:var(--muted);}
+.tm-restile.act{background:var(--green);color:#fff;border-color:var(--green);}
+.tm-restile.act span{color:#fff;}
+.tm-restile.off{opacity:.4;cursor:default;}
+.tm-restile:not(.off):hover{border-color:var(--gold);}
+
+/* answer */
+.tm-answer{padding:18px 17px;margin-bottom:14px;}
+.tm-answer-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.tm-spark{display:flex;align-items:center;gap:6px;font-family:var(--fd);font-weight:600;font-size:17px;color:var(--ink);}
+.tm-spark svg{color:var(--gold);}
+.tm-tag{font-size:11px;background:var(--soft);color:var(--green-d);padding:4px 11px;border-radius:20px;font-weight:500;}
+.tm-qasked{font-family:var(--fd);font-style:italic;font-size:16px;color:var(--green);margin-bottom:10px;}
+.tm-md{font-family:var(--fd);font-size:18px;line-height:1.5;color:#3a382f;}
+.tm-p{margin:0 0 10px;}
+.tm-h3{font-family:var(--fd);font-weight:600;font-size:20px;color:var(--green);margin:14px 0 6px;}
+.tm-h4{font-family:var(--fd);font-weight:600;font-size:18px;color:var(--gold-d);margin:12px 0 4px;}
+.tm-ul{margin:0 0 10px;padding-left:20px;}
+.tm-ul li{margin-bottom:5px;}
+.tm-md strong{color:var(--green-d);font-weight:600;}
+.tm-ref{display:inline-flex;align-items:center;gap:7px;margin-top:6px;color:var(--gold-d);
+  font-family:var(--fu);font-size:13px;font-weight:500;}
+.tm-err{color:#9a3b2f;font-family:var(--fu);font-size:14px;}
+
+/* loading */
+.tm-loading{display:flex;flex-direction:column;align-items:center;gap:10px;padding:18px 0;color:var(--muted);font-family:var(--fd);font-style:italic;font-size:16px;}
+.tm-loading{flex-direction:row;flex-wrap:wrap;justify-content:center;}
+.tm-loading>div{width:100%;text-align:center;}
+.tm-dot{width:8px;height:8px;border-radius:50%;background:var(--green);display:inline-block;animation:bounce 1s infinite;}
+.tm-dot:nth-child(2){animation-delay:.15s;}.tm-dot:nth-child(3){animation-delay:.3s;}
+@keyframes bounce{0%,80%,100%{transform:scale(.6);opacity:.5;}40%{transform:scale(1);opacity:1;}}
+
+/* verses */
+.tm-vsubject{font-family:var(--fd);font-style:italic;font-size:16px;color:var(--green);margin-bottom:12px;}
+.tm-vloading{font-family:var(--fd);font-style:italic;color:var(--muted);font-size:15px;padding:6px 0;}
+.tm-verse{margin-bottom:14px;}
+.tm-verse-ref{display:flex;align-items:center;gap:5px;font-family:var(--fu);font-size:12px;font-weight:600;color:var(--gold-d);margin-bottom:2px;}
+.tm-verse-txt{font-family:var(--fd);font-size:17px;color:#3a382f;line-height:1.45;}
+
+/* footnote */
+.tm-footnote{text-align:center;font-family:var(--fd);font-style:italic;font-size:14px;
+  color:var(--muted);line-height:1.5;margin:6px 8px 4px;}
+
+/* explorar */
+.tm-lead{color:var(--muted);font-size:13px;margin:0 2px 14px;}
+.tm-expgroup{margin-bottom:16px;}
+.tm-expcat{font-family:var(--fd);font-weight:600;font-size:17px;color:var(--gold-d);margin-bottom:8px;}
+.tm-expitem{width:100%;display:flex;justify-content:space-between;align-items:center;gap:10px;
+  background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 15px;margin-bottom:8px;
+  font-family:var(--fd);font-size:17px;color:var(--green);cursor:pointer;text-align:left;transition:.18s;}
+.tm-expitem:hover{border-color:var(--gold);}
+.tm-expitem svg{color:var(--gold-d);flex:0 0 auto;}
+
+/* favoritos */
+.tm-empty{display:flex;flex-direction:column;align-items:center;gap:12px;padding:50px 20px;color:var(--muted);text-align:center;}
+.tm-empty svg{color:var(--gold);opacity:.6;}
+.tm-empty p{font-family:var(--fd);font-size:16px;line-height:1.5;}
+.tm-empty.sm{padding:24px;}
+.tm-favcard{display:flex;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:16px;
+  padding:14px 14px;margin-bottom:10px;}
+.tm-favmain{flex:1;background:none;border:none;text-align:left;cursor:pointer;min-width:0;}
+.tm-favq{font-family:var(--fd);font-weight:600;font-size:18px;color:var(--green);margin-bottom:4px;}
+.tm-favref{display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--gold-d);font-weight:500;margin-bottom:6px;}
+.tm-favsnip{font-family:var(--fd);font-size:15px;color:var(--muted);line-height:1.4;}
+.tm-favdel{background:none;border:none;color:var(--muted);cursor:pointer;flex:0 0 auto;align-self:flex-start;padding:4px;}
+.tm-favdel:hover{color:#9a3b2f;}
+
+/* perfil */
+.tm-profile{padding:24px 18px;display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:12px;}
+.tm-pname{font-family:var(--fd);font-weight:600;font-size:26px;color:var(--green);margin-top:10px;}
+.tm-pchurch{font-family:var(--fc);font-size:12px;letter-spacing:2px;color:var(--gold-d);text-transform:uppercase;margin-top:2px;}
+.tm-pdesc{font-family:var(--fd);font-size:16px;color:var(--muted);line-height:1.5;margin:12px 0 14px;}
+.tm-pbadges{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;}
+.tm-pbadge{font-size:11px;background:var(--soft);color:var(--green-d);padding:5px 12px;border-radius:20px;}
+.tm-pref{padding:16px 16px;margin-bottom:12px;}
+.tm-pref-t{font-family:var(--fd);font-weight:600;font-size:17px;color:var(--ink);margin-bottom:10px;}
+.tm-pstats{display:flex;gap:10px;}
+.tm-pstats>div{flex:1;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;text-align:center;}
+.tm-pstats b{font-family:var(--fd);font-size:28px;color:var(--green);display:block;}
+.tm-pstats span{font-size:12px;color:var(--muted);}
+
+/* overlay / history */
+.tm-overlay{position:absolute;inset:0;background:rgba(30,20,5,.35);display:flex;align-items:flex-end;z-index:30;animation:fade .2s;}
+@keyframes fade{from{opacity:0;}to{opacity:1;}}
+.tm-sheet{width:100%;background:var(--bg);border-radius:24px 24px 0 0;max-height:72%;display:flex;flex-direction:column;animation:up .25s;}
+@keyframes up{from{transform:translateY(40px);}to{transform:translateY(0);}}
+.tm-sheet-h{display:flex;justify-content:space-between;align-items:center;padding:18px 18px 12px;}
+.tm-sheet-h span{display:flex;align-items:center;gap:8px;font-family:var(--fd);font-weight:600;font-size:20px;color:var(--green);}
+.tm-sheet-h button{background:none;border:none;color:var(--muted);cursor:pointer;}
+.tm-sheet-body{overflow-y:auto;padding:0 18px 24px;}
+.tm-histitem{width:100%;display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);
+  border-radius:13px;padding:13px 14px;margin-bottom:8px;font-family:var(--fd);font-size:16px;color:var(--green);
+  cursor:pointer;text-align:left;}
+.tm-histitem svg{color:var(--gold-d);flex:0 0 auto;}
+
+/* bottom nav */
+.tm-nav{position:absolute;bottom:0;left:0;right:0;height:74px;background:var(--card);
+  border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-around;
+  padding:0 6px;box-shadow:0 -4px 16px rgba(60,45,15,.06);}
+.tm-navbtn{background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:3px;
+  color:var(--muted);font-family:var(--fu);font-size:10.5px;cursor:pointer;flex:1;transition:.18s;}
+.tm-navbtn.on{color:var(--green);}
+.tm-navplus{width:54px;height:54px;border-radius:50%;background:var(--green);color:#fff;border:none;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;margin-top:-16px;flex:0 0 auto;
+  box-shadow:0 8px 18px rgba(31,74,59,.35);transition:.2s;}
+.tm-navplus:hover{background:var(--green-d);}
+.tm-sharebox{width:100%;min-height:170px;border:1px solid var(--line);border-radius:14px;background:var(--card);
+  padding:12px;font-family:var(--fd);font-size:15px;color:#3a382f;line-height:1.45;resize:none;outline:none;margin-bottom:12px;}
+.tm-copybtn{width:100%;display:flex;align-items:center;justify-content:center;gap:8px;background:var(--green);color:#fff;
+  border:none;padding:14px;border-radius:28px;font-family:var(--fu);font-size:14px;font-weight:500;cursor:pointer;}
+.tm-copybtn:hover{background:var(--green-d);}
+
+/* ajustes para rodar como site/app independente */
+html,body{margin:0;padding:0;background:#EFE7D7;}
+@media (max-width:480px){
+  .tm-root{padding:0;background:var(--bg);min-height:100dvh;}
+  .tm-phone{max-width:100%;width:100%;height:100vh;height:100dvh;border-radius:0;box-shadow:none;}
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+const { useState, useEffect, useRef } = React;
+
+/* ---------- ícones (SVG embutidos, estilo lucide) ---------- */
+const ICONS = {
+  user: '<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+  send: '<path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/>',
+  message: '<path d="M22 17a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/><path d="M7 9h10"/><path d="M7 13h6"/>',
+  'align-left': '<line x1="21" x2="3" y1="6" y2="6"/><line x1="15" x2="3" y1="12" y2="12"/><line x1="17" x2="3" y1="18" y2="18"/>',
+  leaf: '<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/>',
+  cap: '<path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/>',
+  heart: '<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>',
+  share2: '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/>',
+  headphones: '<path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-5a9 9 0 0 1 18 0v5a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"/>',
+  'book-marked': '<path d="M10 2v8l3-3 3 3V2"/><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/>',
+  clock: '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
+  home: '<path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>',
+  search: '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
+  plus: '<path d="M5 12h14"/><path d="M12 5v14"/>',
+  mic: '<path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/>',
+  sparkles: '<path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .962 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.962 0z"/>',
+  'chevron-right': '<path d="m9 18 6-6-6-6"/>',
+  x: '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
+  square: '<rect width="14" height="14" x="5" y="5" rx="2"/>',
+  trash: '<path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/>',
+  'book-open': '<path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/>',
+  quote: '<path d="M16 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2.5a.5.5 0 0 1 .5.5v1a2 2 0 0 1-2 2h-1a1 1 0 0 0-1 1v.5a.5.5 0 0 0 .5.5 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"/><path d="M5 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2.5a.5.5 0 0 1 .5.5v1a2 2 0 0 1-2 2h-1a1 1 0 0 0-1 1v.5a.5.5 0 0 0 .5.5 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"/>',
+  check: '<path d="M20 6 9 17l-5-5"/>',
+};
+function Icon({ name, size = 24, fill = "none" }) {
+  return React.createElement("svg", {
+    width: size, height: size, viewBox: "0 0 24 24", fill,
+    stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round",
+    dangerouslySetInnerHTML: { __html: ICONS[name] || "" },
+  });
+}
+
+const FORMATS = [
+  { id: "curta", label: "Curta", icon: "message" },
+  { id: "longa", label: "Longa", icon: "align-left" },
+  { id: "simples", label: "Simples", icon: "leaf" },
+  { id: "academica", label: "Acadêmica", icon: "cap" },
+];
+const FORMAT_LABEL = { curta: "Curta", longa: "Longa", simples: "Simples", academica: "Acadêmica" };
+
+const EXPLORE = [
+  { cat: "Doutrina", items: ["O que é a Trindade?", "O que significa justificação pela fé?", "Como entender a soberania de Deus e o livre-arbítrio?"] },
+  { cat: "Vida cristã", items: ["Como crescer em santidade no dia a dia?", "O que a Bíblia ensina sobre o perdão?", "Como lidar com a ansiedade segundo as Escrituras?"] },
+  { cat: "Bíblia", items: ["O que Jesus quis dizer em Mateus 5?", "Qual o contexto do Salmo 23?", "Como interpretar o livro de Apocalipse?"] },
+  { cat: "Liderança", items: ["Quais as marcas de um líder servo?", "Como preparar um sermão expositivo?", "O que é discipulado bíblico?"] },
+];
+
+function stripMarkdown(t) {
+  return (t || "").replace(/^#{1,6}\s+/gm, "").replace(/\*\*(.*?)\*\*/g, "$1").replace(/\*(.*?)\*/g, "$1").replace(/^[-*]\s+/gm, "").replace(/`/g, "").trim();
+}
+function renderInline(text, kp) {
+  const out = []; const regex = /(\*\*([^*]+)\*\*|\*([^*]+)\*)/g; let last = 0, m, i = 0;
+  while ((m = regex.exec(text)) !== null) {
+    if (m.index > last) out.push(text.slice(last, m.index));
+    if (m[2] !== undefined) out.push(<strong key={kp + "b" + i}>{m[2]}</strong>);
+    else if (m[3] !== undefined) out.push(<em key={kp + "i" + i}>{m[3]}</em>);
+    last = m.index + m[0].length; i++;
+  }
+  if (last < text.length) out.push(text.slice(last));
+  return out;
+}
+function Markdown({ text }) {
+  const lines = (text || "").split("\n"); const blocks = []; let list = null;
+  const flush = () => { if (list) { blocks.push(<ul className="tm-ul" key={"ul" + blocks.length}>{list.map((li, k) => <li key={k}>{renderInline(li, "li" + blocks.length + k)}</li>)}</ul>); list = null; } };
+  lines.forEach((raw, idx) => {
+    const t = raw.trim();
+    if (!t) { flush(); return; }
+    if (t.startsWith("### ")) { flush(); blocks.push(<h4 className="tm-h4" key={idx}>{renderInline(t.slice(4), "h" + idx)}</h4>); }
+    else if (t.startsWith("## ")) { flush(); blocks.push(<h3 className="tm-h3" key={idx}>{renderInline(t.slice(3), "h" + idx)}</h3>); }
+    else if (t.startsWith("# ")) { flush(); blocks.push(<h3 className="tm-h3" key={idx}>{renderInline(t.slice(2), "h" + idx)}</h3>); }
+    else if (/^[-*]\s+/.test(t)) { if (!list) list = []; list.push(t.replace(/^[-*]\s+/, "")); }
+    else { flush(); blocks.push(<p className="tm-p" key={idx}>{renderInline(t, "p" + idx)}</p>); }
+  });
+  flush();
+  return <div className="tm-md">{blocks}</div>;
+}
+function Emblem({ size = 46 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 64 64" aria-hidden="true">
+      <circle cx="32" cy="32" r="30" fill="#FBF7EF" stroke="var(--gold)" strokeWidth="2" />
+      {[-18, -9, 0, 9, 18].map((a, i) => (
+        <line key={i} x1="32" y1="14" x2={32 + a * 0.55} y2="9" stroke="var(--gold)" strokeWidth="1.4" strokeLinecap="round" transform={`rotate(${a} 32 20)`} />
+      ))}
+      <rect x="30.6" y="15" width="2.8" height="13" rx="1.2" fill="var(--green)" />
+      <rect x="27.5" y="18.5" width="9" height="2.6" rx="1.2" fill="var(--green)" />
+      <path d="M14 34 C20 31, 28 31, 32 34 C36 31, 44 31, 50 34 L50 47 C44 44, 36 44, 32 47 C28 44, 20 44, 14 47 Z" fill="none" stroke="var(--green)" strokeWidth="2" strokeLinejoin="round" />
+      <line x1="32" y1="34" x2="32" y2="47" stroke="var(--green)" strokeWidth="1.6" />
+    </svg>
+  );
+}
+
+function loadLS(k, def) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : def; } catch (e) { return def; } }
+function saveLS(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+
+function App() {
+  const [tab, setTab] = useState("inicio");
+  const [question, setQuestion] = useState("");
+  const [format, setFormat] = useState("curta");
+  const [loading, setLoading] = useState(false);
+  const [answer, setAnswer] = useState(null);
+  const [error, setError] = useState("");
+  const [isListening, setIsListening] = useState(false);
+  const [micNote, setMicNote] = useState("");
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [favorites, setFavorites] = useState(() => loadLS("tem_favorites", []));
+  const [history, setHistory] = useState(() => loadLS("tem_history", []));
+  const [copied, setCopied] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
+  const [versesOpen, setVersesOpen] = useState(false);
+  const [verses, setVerses] = useState(null);
+  const [versesLoading, setVersesLoading] = useState(false);
+
+  const recRef = useRef(null);
+  const inputRef = useRef(null);
+
+  function toggleMic() {
+    setMicNote("");
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) { setMicNote("Seu navegador não suporta ditado por voz — você pode digitar normalmente."); return; }
+    if (isListening) { if (recRef.current) recRef.current.stop(); return; }
+    const rec = new SR();
+    rec.lang = "pt-BR"; rec.interimResults = true; rec.continuous = false;
+    rec.onresult = (e) => { let txt = ""; for (let i = 0; i < e.results.length; i++) txt += e.results[i][0].transcript; setQuestion(txt); };
+    rec.onend = () => setIsListening(false);
+    rec.onerror = (e) => { setIsListening(false); if (e.error === "not-allowed" || e.error === "service-not-allowed") setMicNote("Permita o acesso ao microfone para usar o ditado."); };
+    recRef.current = rec;
+    try { rec.start(); setIsListening(true); } catch (e) {}
+  }
+
+  function toggleSpeak() {
+    if (!("speechSynthesis" in window) || !answer) return;
+    if (isSpeaking) { window.speechSynthesis.cancel(); setIsSpeaking(false); return; }
+    const u = new SpeechSynthesisUtterance(stripMarkdown(answer.resposta));
+    u.lang = "pt-BR"; u.rate = 1;
+    u.onend = () => setIsSpeaking(false); u.onerror = () => setIsSpeaking(false);
+    window.speechSynthesis.cancel(); window.speechSynthesis.speak(u); setIsSpeaking(true);
+  }
+
+  async function ask(q, fmt) {
+    const query = (q != null ? q : question).trim();
+    const usedFormat = fmt != null ? fmt : format;
+    if (!query) return;
+    setLoading(true); setError(""); setAnswer(null); setVerses(null); setVersesOpen(false);
+    if ("speechSynthesis" in window) window.speechSynthesis.cancel(); setIsSpeaking(false);
+    try {
+      const res = await fetch("/api/ask", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ mode: "answer", question: query, format: usedFormat }) });
+      const data = await res.json();
+      if (!res.ok || data.error) { setError(data.error || "Não consegui buscar a resposta agora."); setLoading(false); return; }
+      const text = (data.text || "").trim();
+      let referencia = ""; let resposta = text;
+      const nl = text.indexOf("\n");
+      const firstLine = (nl === -1 ? text : text.slice(0, nl)).trim();
+      const mm = firstLine.match(/^REFER[EÊÉ]NCIA\s*:\s*(.+)$/i);
+      if (mm) { referencia = mm[1].trim().replace(/^["']|["']$/g, ""); resposta = (nl === -1 ? "" : text.slice(nl + 1)).trim(); }
+      resposta = resposta.replace(/```json|```/g, "").trim();
+      const entry = { id: Date.now(), question: query, referencia, resposta, format: usedFormat };
+      setAnswer(entry);
+      const newHist = [entry, ...history].slice(0, 40);
+      setHistory(newHist); saveLS("tem_history", newHist);
+    } catch (e) {
+      setError("Não consegui buscar a resposta agora. Verifique a conexão e tente novamente.");
+    } finally { setLoading(false); }
+  }
+
+  async function loadVerses() {
+    if (!answer) return;
+    setVersesOpen(true);
+    if (verses) return;
+    setVersesLoading(true);
+    try {
+      const res = await fetch("/api/ask", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ mode: "verses", question: answer.question }) });
+      const data = await res.json();
+      const text = data.text || "";
+      const arr = text.split("\n").map((l) => l.trim()).filter((l) => l.includes("::")).map((l) => { const i = l.indexOf("::"); return { ref: l.slice(0, i).trim().replace(/^[-*\d.\s]+/, ""), texto: l.slice(i + 2).trim() }; });
+      setVerses(arr);
+    } catch (e) { setVerses([]); } finally { setVersesLoading(false); }
+  }
+
+  async function copyText(t) {
+    try { if (navigator.clipboard && window.isSecureContext) { await navigator.clipboard.writeText(t); return true; } } catch (e) {}
+    try { const ta = document.createElement("textarea"); ta.value = t; ta.style.position = "fixed"; ta.style.top = "0"; ta.style.opacity = "0"; document.body.appendChild(ta); ta.focus(); ta.select(); const ok = document.execCommand("copy"); document.body.removeChild(ta); return ok; } catch (e) { return false; }
+  }
+  function shareText() { if (!answer) return ""; return `Teologia em Minutos — Igreja Vidas\n\nPergunta: ${answer.question}\n\n${stripMarkdown(answer.resposta)}${answer.referencia ? "\n\n(" + answer.referencia + ")" : ""}`; }
+  async function share() { if (!answer) return; try { if (navigator.share) { await navigator.share({ title: "Teologia em Minutos", text: shareText() }); return; } } catch (e) {} setShareOpen(true); }
+  async function doCopy() { const ok = await copyText(shareText()); setCopied(ok); setTimeout(() => setCopied(false), 1600); }
+
+  function toggleSave() {
+    if (!answer) return;
+    const exists = favorites.some((f) => f.id === answer.id);
+    let next;
+    if (exists) next = favorites.filter((f) => f.id !== answer.id);
+    else next = [answer, ...favorites];
+    setFavorites(next); saveLS("tem_favorites", next);
+  }
+  const isFav = answer && favorites.some((f) => f.id === answer.id);
+  function removeFav(id) { const next = favorites.filter((f) => f.id !== id); setFavorites(next); saveLS("tem_favorites", next); }
+
+  function openEntry(entry) { setAnswer(entry); setFormat(entry.format); setQuestion(entry.question); setTab("inicio"); setShowHistory(false); setVerses(null); setVersesOpen(false); }
+  function newQuestion() { setTab("inicio"); setQuestion(""); setAnswer(null); setError(""); setTimeout(() => inputRef.current && inputRef.current.focus(), 60); }
+
+  const speechSupported = typeof window !== "undefined" && "speechSynthesis" in window;
+
+  const resources = [
+    { id: "salvar", label: isFav ? "Favoritada" : "Favoritar", icon: "heart", onClick: toggleSave, active: isFav, need: true },
+    { id: "share", label: copied ? "Copiada" : "Compartilhar", icon: "share2", onClick: share, need: true },
+    { id: "audio", label: isSpeaking ? "Parar" : "Ouvir\náudio", icon: isSpeaking ? "square" : "headphones", onClick: toggleSpeak, active: isSpeaking, need: true, disabled: !speechSupported },
+    { id: "verses", label: "Versículos\nrelacionados", icon: "book-marked", onClick: loadVerses, need: true },
+    { id: "hist", label: "Histórico", icon: "clock", onClick: () => setShowHistory(true), need: false },
+  ];
+
+  return (
+    <div className="tm-root">
+      <div className="tm-phone">
+        <div className="tm-scroll">
+
+          <div className="tm-header">
+            <div className="tm-greet">
+              <div className="tm-avatar"><Icon name="user" size={18} /></div>
+              <div>
+                <div className="tm-greet-1">Olá, irmão(ã)</div>
+                <div className="tm-greet-2">Que Deus abençoe o seu dia!</div>
+              </div>
+            </div>
+            <Emblem />
+          </div>
+
+          {tab === "inicio" && (
+            <>
+              <div className="tm-title">
+                <span className="tm-title-1">Pergunte</span>
+                <span className="tm-title-2">sobre a Bíblia</span>
+                <span className="tm-rule"><span className="tm-diamond">◆</span></span>
+              </div>
+
+              <div className="tm-card tm-qcard">
+                <span className="tm-quote"><Icon name="quote" size={30} /></span>
+                <textarea ref={inputRef} className="tm-input" value={question} onChange={(e) => setQuestion(e.target.value)} placeholder="O que Jesus quis dizer em Mateus 5?" rows={2} onKeyDown={(e) => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) ask(); }} />
+                <div className="tm-qrow">
+                  <div className="tm-hint">
+                    <button className={"tm-mic" + (isListening ? " on" : "")} onClick={toggleMic} title="Falar a pergunta"><Icon name="mic" size={16} /></button>
+                    <span>{isListening ? "Ouvindo… pode falar" : "Faça sua pergunta\nsobre a Bíblia ou teologia"}</span>
+                  </div>
+                  <button className="tm-send" onClick={() => ask()} disabled={loading || !question.trim()}><Icon name="send" size={17} /> Enviar pergunta</button>
+                </div>
+                {micNote && <div className="tm-micnote">{micNote}</div>}
+              </div>
+
+              <div className="tm-pills">
+                {FORMATS.map((f) => (
+                  <button key={f.id} className={"tm-pill" + (format === f.id ? " sel" : "")} onClick={() => setFormat(f.id)}>
+                    <Icon name={f.icon} size={14} /> {f.label}
+                  </button>
+                ))}
+              </div>
+
+              <div className="tm-section"><span className="tm-section-t">Recursos rápidos</span></div>
+              <div className="tm-res">
+                {resources.map((r) => {
+                  const off = (r.need && !answer) || r.disabled;
+                  return (
+                    <button key={r.id} className={"tm-restile" + (r.active ? " act" : "") + (off ? " off" : "")} onClick={() => !off && r.onClick()}>
+                      {r.id === "salvar" ? <Icon name="heart" size={20} fill={isFav ? "currentColor" : "none"} /> : <Icon name={r.icon} size={20} />}
+                      <span>{r.label.split("\n").map((l, i) => <span key={i}>{l}<br /></span>)}</span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {loading && (
+                <div className="tm-card tm-answer"><div className="tm-loading"><span className="tm-dot" /><span className="tm-dot" /><span className="tm-dot" /><div>Buscando à luz das Escrituras…</div></div></div>
+              )}
+              {!loading && error && (<div className="tm-card tm-answer"><p className="tm-err">{error}</p></div>)}
+
+              {!loading && !error && answer && (
+                <div className="tm-card tm-answer">
+                  <div className="tm-answer-head">
+                    <span className="tm-spark"><Icon name="sparkles" size={15} /> Resposta</span>
+                    <span className="tm-tag">{FORMAT_LABEL[answer.format]}</span>
+                  </div>
+                  <div className="tm-qasked">“{answer.question}”</div>
+                  <Markdown text={answer.resposta} />
+                  {answer.referencia && (<div className="tm-ref"><Icon name="book-open" size={16} /> {answer.referencia}</div>)}
+                </div>
+              )}
+
+              {!loading && !error && !answer && (
+                <div className="tm-card tm-answer">
+                  <div className="tm-answer-head">
+                    <span className="tm-spark"><Icon name="sparkles" size={15} /> Resposta em destaque</span>
+                    <span className="tm-tag">Curta</span>
+                  </div>
+                  <p className="tm-p">Em Mateus 5, Jesus inicia o Sermão do Monte ensinando sobre o Reino de Deus. Ele apresenta princípios como humildade, justiça, misericórdia e pureza do coração, mostrando o caminho para uma vida que agrada a Deus.</p>
+                  <div className="tm-ref"><Icon name="book-open" size={16} /> Mateus 5:1-12</div>
+                </div>
+              )}
+
+              <div className="tm-footnote">O objetivo final da teologia não é apenas informar a mente,<br />mas transformar a vida à luz da Palavra de Deus.</div>
+            </>
+          )}
+
+          {tab === "explorar" && (
+            <>
+              <div className="tm-title sm"><span className="tm-title-2">Explorar</span></div>
+              <p className="tm-lead">Toque em uma pergunta para receber a resposta.</p>
+              {EXPLORE.map((g) => (
+                <div key={g.cat} className="tm-expgroup">
+                  <div className="tm-expcat">{g.cat}</div>
+                  {g.items.map((q) => (
+                    <button key={q} className="tm-expitem" onClick={() => { setQuestion(q); setTab("inicio"); ask(q); }}>
+                      <span>{q}</span><Icon name="chevron-right" size={16} />
+                    </button>
+                  ))}
+                </div>
+              ))}
+            </>
+          )}
+
+          {tab === "favoritos" && (
+            <>
+              <div className="tm-title sm"><span className="tm-title-2">Favoritos</span></div>
+              {favorites.length === 0 && (<div className="tm-empty"><Icon name="heart" size={28} /><p>Você ainda não favoritou nenhuma resposta.<br />Toque no coração “Favoritar” para guardá-la aqui.</p></div>)}
+              {favorites.map((f) => (
+                <div key={f.id} className="tm-favcard">
+                  <button className="tm-favmain" onClick={() => openEntry(f)}>
+                    <div className="tm-favq">{f.question}</div>
+                    {f.referencia && <div className="tm-favref"><Icon name="book-open" size={13} /> {f.referencia}</div>}
+                    <div className="tm-favsnip">{stripMarkdown(f.resposta).slice(0, 120)}…</div>
+                  </button>
+                  <button className="tm-favdel" onClick={() => removeFav(f.id)}><Icon name="trash" size={16} /></button>
+                </div>
+              ))}
+            </>
+          )}
+
+          {tab === "perfil" && (
+            <>
+              <div className="tm-title sm"><span className="tm-title-2">Perfil</span></div>
+              <div className="tm-card tm-profile">
+                <Emblem size={64} />
+                <div className="tm-pname">Teologia em Minutos</div>
+                <div className="tm-pchurch">Igreja Vidas</div>
+                <p className="tm-pdesc">Assistente de Bíblia e Teologia com fidelidade às Escrituras, clareza pastoral e aplicação prática.</p>
+                <div className="tm-pbadges">{["Evangélica", "Conservadora", "Cristocêntrica", "Batista tradicional"].map((b) => (<span key={b} className="tm-pbadge">{b}</span>))}</div>
+              </div>
+              <div className="tm-card tm-pref">
+                <div className="tm-pref-t">Formato padrão das respostas</div>
+                <div className="tm-pills">{FORMATS.map((f) => (<button key={f.id} className={"tm-pill" + (format === f.id ? " sel" : "")} onClick={() => setFormat(f.id)}><Icon name={f.icon} size={14} /> {f.label}</button>))}</div>
+              </div>
+              <div className="tm-pstats"><div><b>{favorites.length}</b><span>Favoritos</span></div><div><b>{history.length}</b><span>Perguntas</span></div></div>
+            </>
+          )}
+
+        </div>
+
+        {showHistory && (
+          <div className="tm-overlay" onClick={() => setShowHistory(false)}>
+            <div className="tm-sheet" onClick={(e) => e.stopPropagation()}>
+              <div className="tm-sheet-h"><span><Icon name="clock" size={16} /> Histórico</span><button onClick={() => setShowHistory(false)}><Icon name="x" size={18} /></button></div>
+              <div className="tm-sheet-body">
+                {history.length === 0 && <div className="tm-empty sm"><p>Nenhuma pergunta ainda.</p></div>}
+                {history.map((h) => (<button key={h.id} className="tm-histitem" onClick={() => openEntry(h)}><Icon name="message" size={15} /><span>{h.question}</span></button>))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {versesOpen && answer && (
+          <div className="tm-overlay" onClick={() => setVersesOpen(false)}>
+            <div className="tm-sheet" onClick={(e) => e.stopPropagation()}>
+              <div className="tm-sheet-h"><span><Icon name="book-marked" size={16} /> Versículos relacionados</span><button onClick={() => setVersesOpen(false)}><Icon name="x" size={18} /></button></div>
+              <div className="tm-sheet-body">
+                <div className="tm-vsubject">“{answer.question}”</div>
+                {versesLoading && <div className="tm-vloading">Reunindo passagens…</div>}
+                {!versesLoading && verses && verses.length > 0 && verses.map((v, i) => (<div className="tm-verse" key={i}><div className="tm-verse-ref"><Icon name="book-open" size={13} /> {v.ref}</div><div className="tm-verse-txt">{v.texto}</div></div>))}
+                {!versesLoading && verses && verses.length === 0 && (<div className="tm-vloading">Nenhum versículo encontrado.</div>)}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {shareOpen && answer && (
+          <div className="tm-overlay" onClick={() => setShareOpen(false)}>
+            <div className="tm-sheet" onClick={(e) => e.stopPropagation()}>
+              <div className="tm-sheet-h"><span><Icon name="share2" size={16} /> Compartilhar</span><button onClick={() => setShareOpen(false)}><Icon name="x" size={18} /></button></div>
+              <div className="tm-sheet-body">
+                <textarea className="tm-sharebox" readOnly value={shareText()} />
+                <button className="tm-copybtn" onClick={doCopy}>{copied ? <><Icon name="check" size={16} /> Copiado!</> : <><Icon name="share2" size={16} /> Copiar texto</>}</button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className="tm-nav">
+          <button className={"tm-navbtn" + (tab === "inicio" ? " on" : "")} onClick={() => setTab("inicio")}><Icon name="home" size={20} /><span>Início</span></button>
+          <button className={"tm-navbtn" + (tab === "explorar" ? " on" : "")} onClick={() => setTab("explorar")}><Icon name="search" size={20} /><span>Explorar</span></button>
+          <button className="tm-navplus" onClick={newQuestion}><Icon name="plus" size={24} /></button>
+          <button className={"tm-navbtn" + (tab === "favoritos" ? " on" : "")} onClick={() => setTab("favoritos")}><Icon name="heart" size={20} /><span>Favoritos</span></button>
+          <button className={"tm-navbtn" + (tab === "perfil" ? " on" : "")} onClick={() => setTab("perfil")}><Icon name="user" size={20} /><span>Perfil</span></button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
