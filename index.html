@@ -237,6 +237,12 @@ html,body{margin:0;padding:0;background:#EFE7D7;}
   .tm-root{padding:0;background:var(--bg);min-height:100dvh;}
   .tm-phone{max-width:100%;width:100%;height:100vh;height:100dvh;border-radius:0;box-shadow:none;}
 }
+.tm-sync-input{width:100%;box-sizing:border-box;padding:11px 13px;border-radius:12px;border:1px solid rgba(140,140,140,.35);background:rgba(127,127,127,.08);color:inherit;font:inherit;margin:8px 0;outline:none}
+.tm-sync-row{display:flex;gap:8px;margin-top:6px}
+.tm-sync-row .tm-pill{flex:1;justify-content:center}
+.tm-sync-active{font-weight:600;margin:4px 0 2px}
+.tm-sync-hint,.tm-sync-msg{font-size:.82rem;opacity:.72;margin-top:8px}
+.tm-syncbtn{display:inline-flex;align-items:center;gap:6px;padding:9px 15px;border-radius:20px;border:1px solid rgba(140,140,140,.35);background:rgba(127,127,127,.08);color:inherit;font:inherit;cursor:pointer;margin-bottom:12px}
 </style>
 </head>
 <body>
@@ -364,6 +370,10 @@ function App() {
   const [verses, setVerses] = useState(null);
   const [versesLoading, setVersesLoading] = useState(false);
   const [theme, setTheme] = useState(() => loadLS("tem_theme", "light"));
+  const [syncCode, setSyncCode] = useState(() => loadLS("tem_sync", ""));
+  const [syncInput, setSyncInput] = useState("");
+  const [syncMsg, setSyncMsg] = useState("");
+  useEffect(() => { const c = loadLS("tem_sync", ""); if (c) { syncAgora(c, false); } }, []);
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", theme === "dark");
@@ -444,16 +454,62 @@ function App() {
   async function share() { if (!answer) return; try { if (navigator.share) { await navigator.share({ title: "Teologia em Minutos", text: shareText() }); return; } } catch (e) {} setShareOpen(true); }
   async function doCopy() { const ok = await copyText(shareText()); setCopied(ok); setTimeout(() => setCopied(false), 1600); }
 
-  function toggleSave() {
+  // ---- sincronização de favoritos (mesmo cofre do Teólogo de Bolso PRO) ----
+  const SYNC_API = "/api/sync";
+  const SYNC_NS = "tm:"; // separa os favoritos deste app dos do outro
+  async function syncGet(code) {
+    const r = await fetch(SYNC_API, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ acao: "get", codigo: SYNC_NS + code }) });
+    const d = await r.json(); if (d && d.error) throw new Error(d.error);
+    return Array.isArray(d.dados) ? d.dados : [];
+  }
+  async function syncSet(code, lista) {
+    const r = await fetch(SYNC_API, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ acao: "set", codigo: SYNC_NS + code, dados: lista }) });
+    const d = await r.json().catch(() => ({})); if (d && d.error) throw new Error(d.error);
+  }
+  function uniaoFav(a, b) { const map = {}, ord = []; (a || []).concat(b || []).forEach((x) => { if (x && !(x.id in map)) { map[x.id] = x; ord.push(x.id); } }); return ord.map((k) => map[k]); }
+  async function syncAgora(code, loud) {
+    code = code || syncCode; if (!code) return false;
+    try {
+      const serv = await syncGet(code);
+      const merged = uniaoFav(loadLS("tem_favorites", []), serv);
+      setFavorites(merged); saveLS("tem_favorites", merged);
+      await syncSet(code, merged);
+      if (loud) setSyncMsg("Favoritos atualizados!");
+      return true;
+    } catch (e) { if (loud) setSyncMsg("Erro: " + (e && e.message ? e.message : "falha de conexão")); return false; }
+  }
+  function gerarSync() { setSyncInput("vidas-" + Math.random().toString(36).slice(2, 6).toUpperCase()); }
+  async function conectarSync() {
+    const c = (syncInput || "").trim().toLowerCase().replace(/\s+/g, "");
+    if (c.length < 4) { setSyncMsg("Código muito curto (mínimo 4)."); return; }
+    setSyncCode(c); saveLS("tem_sync", c); setSyncMsg("Conectando…");
+    const ok = await syncAgora(c, true);
+    if (!ok) { setSyncCode(""); saveLS("tem_sync", ""); }
+  }
+  function desconectarSync() { setSyncCode(""); saveLS("tem_sync", ""); setSyncMsg("Sincronização desligada neste aparelho."); }
+
+  async function toggleSave() {
     if (!answer) return;
     const exists = favorites.some((f) => f.id === answer.id);
-    let next;
-    if (exists) next = favorites.filter((f) => f.id !== answer.id);
-    else next = [answer, ...favorites];
+    if (syncCode) {
+      try {
+        const serv = await syncGet(syncCode);
+        let base = uniaoFav(loadLS("tem_favorites", []), serv).filter((f) => f.id !== answer.id);
+        if (!exists) base = [answer, ...base];
+        setFavorites(base); saveLS("tem_favorites", base);
+        await syncSet(syncCode, base);
+        return;
+      } catch (e) { /* cai para o modo local */ }
+    }
+    const next = exists ? favorites.filter((f) => f.id !== answer.id) : [answer, ...favorites];
     setFavorites(next); saveLS("tem_favorites", next);
   }
   const isFav = answer && favorites.some((f) => f.id === answer.id);
-  function removeFav(id) { const next = favorites.filter((f) => f.id !== id); setFavorites(next); saveLS("tem_favorites", next); }
+  async function removeFav(id) {
+    const next = favorites.filter((f) => f.id !== id);
+    setFavorites(next); saveLS("tem_favorites", next);
+    if (syncCode) { try { const serv = await syncGet(syncCode); const merged = uniaoFav(next, serv).filter((f) => f.id !== id); setFavorites(merged); saveLS("tem_favorites", merged); await syncSet(syncCode, merged); } catch (e) {} }
+  }
 
   function openEntry(entry) { setAnswer(entry); setFormat(entry.format); setQuestion(entry.question); setTab("inicio"); setShowHistory(false); setVerses(null); setVersesOpen(false); }
   function newQuestion() { setTab("inicio"); setQuestion(""); setAnswer(null); setError(""); setTimeout(() => inputRef.current && inputRef.current.focus(), 60); }
@@ -583,6 +639,8 @@ function App() {
           {tab === "favoritos" && (
             <>
               <div className="tm-title sm"><span className="tm-title-2">Favoritos</span></div>
+              {syncCode && (<button className="tm-syncbtn" onClick={() => syncAgora(syncCode, true)}><Icon name="sparkles" size={15} /> Sincronizar agora</button>)}
+              {syncMsg && tab === "favoritos" && <div className="tm-sync-msg">{syncMsg}</div>}
               {favorites.length === 0 && (<div className="tm-empty"><Icon name="heart" size={28} /><p>Você ainda não favoritou nenhuma resposta.<br />Toque no coração “Favoritar” para guardá-la aqui.</p></div>)}
               {favorites.map((f) => (
                 <div key={f.id} className="tm-favcard">
@@ -612,6 +670,25 @@ function App() {
                 <div className="tm-pills">{FORMATS.map((f) => (<button key={f.id} className={"tm-pill" + (format === f.id ? " sel" : "")} onClick={() => setFormat(f.id)}><Icon name={f.icon} size={14} /> {f.label}</button>))}</div>
               </div>
               <div className="tm-pstats"><div><b>{favorites.length}</b><span>Favoritos</span></div><div><b>{history.length}</b><span>Perguntas</span></div></div>
+              <div className="tm-card tm-pref">
+                <div className="tm-pref-t">Sincronizar favoritos</div>
+                {!syncCode && (<>
+                  <input className="tm-sync-input" placeholder="Digite ou gere um código" value={syncInput} onChange={(e) => setSyncInput(e.target.value)} autoCapitalize="off" autoCorrect="off" />
+                  <div className="tm-sync-row">
+                    <button className="tm-pill" onClick={conectarSync}>Conectar</button>
+                    <button className="tm-pill" onClick={gerarSync}>Gerar código</button>
+                  </div>
+                  <p className="tm-sync-hint">Use o mesmo código no celular e no computador para compartilhar os favoritos.</p>
+                </>)}
+                {syncCode && (<>
+                  <div className="tm-sync-active">Sincronização ativa. Código: {syncCode}</div>
+                  <div className="tm-sync-row">
+                    <button className="tm-pill" onClick={() => syncAgora(syncCode, true)}>Sincronizar agora</button>
+                    <button className="tm-pill" onClick={desconectarSync}>Desconectar</button>
+                  </div>
+                </>)}
+                {syncMsg && <p className="tm-sync-msg">{syncMsg}</p>}
+              </div>
             </>
           )}
 
