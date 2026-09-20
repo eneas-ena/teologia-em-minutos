@@ -1,10 +1,13 @@
-// api/sync.js — sincronização de favoritos do "Teólogo de Bolso PRO"
+// api/sync.js — sincronização de favoritos do "Teologia em Minutos"
 // Guarda os favoritos num cofre central (Supabase), identificados por um código pessoal.
 // As credenciais do banco ficam SÓ aqui no servidor; o navegador nunca as vê.
 //
 // Variáveis de ambiente necessárias na Vercel:
 //   SUPABASE_URL  -> a URL do projeto (ex.: https://xxxx.supabase.co)
 //   SUPABASE_KEY  -> a chave "service_role" do Supabase (secreta)
+//
+// Tabela usada no Supabase: tem_favoritos
+//   codigo (text, chave primária) | dados (jsonb) | atualizado_em (timestamptz)
 
 module.exports = async (req, res) => {
   const URL = process.env.SUPABASE_URL;
@@ -14,7 +17,7 @@ module.exports = async (req, res) => {
   // Não revela a chave secreta — só se ela existe e o que o Supabase responde.
   if (req.method === "GET") {
     const out = { temURL: !!URL, temKEY: !!KEY };
-    if (URL) out.base = URL.replace(/\/$/, "") + "/rest/v1/tbp_favoritos";
+    if (URL) out.base = URL.replace(/\/$/, "") + "/rest/v1/tem_favoritos";
     if (URL && KEY) {
       try {
         const r = await fetch(out.base + "?select=codigo&limit=1", {
@@ -48,7 +51,7 @@ module.exports = async (req, res) => {
     return;
   }
 
-  const base = URL.replace(/\/$/, "") + "/rest/v1/tbp_favoritos";
+  const base = URL.replace(/\/$/, "") + "/rest/v1/tem_favoritos";
   const headers = {
     "apikey": KEY,
     "Authorization": "Bearer " + KEY,
@@ -65,12 +68,11 @@ module.exports = async (req, res) => {
     }
     if (acao === "set") {
       const dados = (body && Array.isArray(body.dados)) ? body.dados : [];
-      // Apaga o registro atual deste código (se existir) e insere o novo.
-      // Evita depender de "upsert", que a configuração do banco pode não aceitar.
-      await fetch(base + "?codigo=eq." + encodeURIComponent(codigo), { method: "DELETE", headers });
+      // Upsert pela chave primária "codigo": atualiza o registro se já existir,
+      // ou cria se não existir. Não duplica e não depende de apagar antes.
       const r = await fetch(base, {
         method: "POST",
-        headers: Object.assign({}, headers, { "Prefer": "return=minimal" }),
+        headers: Object.assign({}, headers, { "Prefer": "resolution=merge-duplicates,return=minimal" }),
         body: JSON.stringify({ codigo, dados, atualizado_em: new Date().toISOString() }),
       });
       if (!r.ok) {
