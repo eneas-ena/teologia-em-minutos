@@ -561,7 +561,6 @@ function(a,b,c){if(!Vd(b))throw Error(m(200));return Wd(null,a,b,!1,c)};Q.unmoun
 
 </script>
 <script>
-import { jsxDEV as _jsxDEV, Fragment as _Fragment } from "react/jsx-dev-runtime";
 const {
   useState,
   useEffect,
@@ -661,11 +660,11 @@ function renderInline(text, kp) {
     i = 0;
   while ((m = regex.exec(text)) !== null) {
     if (m.index > last) out.push(text.slice(last, m.index));
-    if (m[2] !== undefined) out.push(/*#__PURE__*/_jsxDEV("strong", {
-      children: m[2]
-    }, kp + "b" + i, false));else if (m[3] !== undefined) out.push(/*#__PURE__*/_jsxDEV("em", {
-      children: m[3]
-    }, kp + "i" + i, false));
+    if (m[2] !== undefined) out.push(/*#__PURE__*/React.createElement("strong", {
+      key: kp + "b" + i
+    }, m[2]));else if (m[3] !== undefined) out.push(/*#__PURE__*/React.createElement("em", {
+      key: kp + "i" + i
+    }, m[3]));
     last = m.index + m[0].length;
     i++;
   }
@@ -680,12 +679,12 @@ function Markdown({
   let list = null;
   const flush = () => {
     if (list) {
-      blocks.push(/*#__PURE__*/_jsxDEV("ul", {
+      blocks.push(/*#__PURE__*/React.createElement("ul", {
         className: "tm-ul",
-        children: list.map((li, k) => /*#__PURE__*/_jsxDEV("li", {
-          children: renderInline(li, "li" + blocks.length + k)
-        }, k, false))
-      }, "ul" + blocks.length, false));
+        key: "ul" + blocks.length
+      }, list.map((li, k) => /*#__PURE__*/React.createElement("li", {
+        key: k
+      }, renderInline(li, "li" + blocks.length + k)))));
       list = null;
     }
   };
@@ -697,92 +696,91 @@ function Markdown({
     }
     if (t.startsWith("### ")) {
       flush();
-      blocks.push(/*#__PURE__*/_jsxDEV("h4", {
+      blocks.push(/*#__PURE__*/React.createElement("h4", {
         className: "tm-h4",
-        children: renderInline(t.slice(4), "h" + idx)
-      }, idx, false));
+        key: idx
+      }, renderInline(t.slice(4), "h" + idx)));
     } else if (t.startsWith("## ")) {
       flush();
-      blocks.push(/*#__PURE__*/_jsxDEV("h3", {
+      blocks.push(/*#__PURE__*/React.createElement("h3", {
         className: "tm-h3",
-        children: renderInline(t.slice(3), "h" + idx)
-      }, idx, false));
+        key: idx
+      }, renderInline(t.slice(3), "h" + idx)));
     } else if (t.startsWith("# ")) {
       flush();
-      blocks.push(/*#__PURE__*/_jsxDEV("h3", {
+      blocks.push(/*#__PURE__*/React.createElement("h3", {
         className: "tm-h3",
-        children: renderInline(t.slice(2), "h" + idx)
-      }, idx, false));
+        key: idx
+      }, renderInline(t.slice(2), "h" + idx)));
     } else if (/^[-*]\s+/.test(t)) {
       if (!list) list = [];
       list.push(t.replace(/^[-*]\s+/, ""));
     } else {
       flush();
-      blocks.push(/*#__PURE__*/_jsxDEV("p", {
+      blocks.push(/*#__PURE__*/React.createElement("p", {
         className: "tm-p",
-        children: renderInline(t, "p" + idx)
-      }, idx, false));
+        key: idx
+      }, renderInline(t, "p" + idx)));
     }
   });
   flush();
-  return /*#__PURE__*/_jsxDEV("div", {
-    className: "tm-md",
-    children: blocks
-  }, void 0, false);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "tm-md"
+  }, blocks);
 }
 function Emblem({
   size = 46
 }) {
-  return /*#__PURE__*/_jsxDEV("svg", {
+  return /*#__PURE__*/React.createElement("svg", {
     width: size,
     height: size,
     viewBox: "0 0 64 64",
-    "aria-hidden": "true",
-    children: [/*#__PURE__*/_jsxDEV("circle", {
-      cx: "32",
-      cy: "32",
-      r: "30",
-      fill: "#FBF7EF",
-      stroke: "var(--gold)",
-      strokeWidth: "2"
-    }, void 0, false), [-18, -9, 0, 9, 18].map((a, i) => /*#__PURE__*/_jsxDEV("line", {
-      x1: "32",
-      y1: "14",
-      x2: 32 + a * 0.55,
-      y2: "9",
-      stroke: "var(--gold)",
-      strokeWidth: "1.4",
-      strokeLinecap: "round",
-      transform: `rotate(${a} 32 20)`
-    }, i, false)), /*#__PURE__*/_jsxDEV("rect", {
-      x: "30.6",
-      y: "15",
-      width: "2.8",
-      height: "13",
-      rx: "1.2",
-      fill: "var(--green)"
-    }, void 0, false), /*#__PURE__*/_jsxDEV("rect", {
-      x: "27.5",
-      y: "18.5",
-      width: "9",
-      height: "2.6",
-      rx: "1.2",
-      fill: "var(--green)"
-    }, void 0, false), /*#__PURE__*/_jsxDEV("path", {
-      d: "M14 34 C20 31, 28 31, 32 34 C36 31, 44 31, 50 34 L50 47 C44 44, 36 44, 32 47 C28 44, 20 44, 14 47 Z",
-      fill: "none",
-      stroke: "var(--green)",
-      strokeWidth: "2",
-      strokeLinejoin: "round"
-    }, void 0, false), /*#__PURE__*/_jsxDEV("line", {
-      x1: "32",
-      y1: "34",
-      x2: "32",
-      y2: "47",
-      stroke: "var(--green)",
-      strokeWidth: "1.6"
-    }, void 0, false)]
-  }, void 0, true);
+    "aria-hidden": "true"
+  }, /*#__PURE__*/React.createElement("circle", {
+    cx: "32",
+    cy: "32",
+    r: "30",
+    fill: "#FBF7EF",
+    stroke: "var(--gold)",
+    strokeWidth: "2"
+  }), [-18, -9, 0, 9, 18].map((a, i) => /*#__PURE__*/React.createElement("line", {
+    key: i,
+    x1: "32",
+    y1: "14",
+    x2: 32 + a * 0.55,
+    y2: "9",
+    stroke: "var(--gold)",
+    strokeWidth: "1.4",
+    strokeLinecap: "round",
+    transform: `rotate(${a} 32 20)`
+  })), /*#__PURE__*/React.createElement("rect", {
+    x: "30.6",
+    y: "15",
+    width: "2.8",
+    height: "13",
+    rx: "1.2",
+    fill: "var(--green)"
+  }), /*#__PURE__*/React.createElement("rect", {
+    x: "27.5",
+    y: "18.5",
+    width: "9",
+    height: "2.6",
+    rx: "1.2",
+    fill: "var(--green)"
+  }), /*#__PURE__*/React.createElement("path", {
+    d: "M14 34 C20 31, 28 31, 32 34 C36 31, 44 31, 50 34 L50 47 C44 44, 36 44, 32 47 C28 44, 20 44, 14 47 Z",
+    fill: "none",
+    stroke: "var(--green)",
+    strokeWidth: "2",
+    strokeLinejoin: "round"
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: "32",
+    y1: "34",
+    x2: "32",
+    y2: "47",
+    stroke: "var(--green)",
+    strokeWidth: "1.6"
+  }));
 }
 function loadLS(k, def) {
   try {
@@ -1186,590 +1184,422 @@ function App() {
     onClick: () => setShowHistory(true),
     need: false
   }];
-  return /*#__PURE__*/_jsxDEV("div", {
-    className: "tm-root",
-    children: /*#__PURE__*/_jsxDEV("div", {
-      className: "tm-phone",
-      children: [/*#__PURE__*/_jsxDEV("div", {
-        className: "tm-scroll",
-        children: [/*#__PURE__*/_jsxDEV("div", {
-          className: "tm-header",
-          children: [/*#__PURE__*/_jsxDEV("div", {
-            className: "tm-greet",
-            children: [/*#__PURE__*/_jsxDEV("div", {
-              className: "tm-avatar",
-              children: /*#__PURE__*/_jsxDEV(Icon, {
-                name: "user",
-                size: 18
-              }, void 0, false)
-            }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-              children: [/*#__PURE__*/_jsxDEV("div", {
-                className: "tm-greet-1",
-                children: "Olá, irmão(ã)"
-              }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-                className: "tm-greet-2",
-                children: "Que Deus abençoe o seu dia!"
-              }, void 0, false)]
-            }, void 0, true)]
-          }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-            className: "tm-headright",
-            children: [/*#__PURE__*/_jsxDEV("button", {
-              className: "tm-theme-btn",
-              onClick: () => setTheme(t => t === "dark" ? "light" : "dark"),
-              title: "Alternar modo claro/escuro",
-              children: /*#__PURE__*/_jsxDEV(Icon, {
-                name: theme === "dark" ? "sun" : "moon",
-                size: 18
-              }, void 0, false)
-            }, void 0, false), /*#__PURE__*/_jsxDEV(Emblem, {}, void 0, false)]
-          }, void 0, true)]
-        }, void 0, true), tab === "inicio" && /*#__PURE__*/_jsxDEV(_Fragment, {
-          children: [/*#__PURE__*/_jsxDEV("div", {
-            className: "tm-title",
-            children: [/*#__PURE__*/_jsxDEV("span", {
-              className: "tm-title-1",
-              children: "Teologia"
-            }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-              className: "tm-title-2",
-              children: "em Minutos"
-            }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-              className: "tm-rule",
-              children: /*#__PURE__*/_jsxDEV("span", {
-                className: "tm-diamond",
-                children: "◆"
-              }, void 0, false)
-            }, void 0, false)]
-          }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-            className: "tm-card tm-qcard",
-            children: [/*#__PURE__*/_jsxDEV("span", {
-              className: "tm-quote",
-              children: /*#__PURE__*/_jsxDEV(Icon, {
-                name: "quote",
-                size: 30
-              }, void 0, false)
-            }, void 0, false), /*#__PURE__*/_jsxDEV("textarea", {
-              ref: inputRef,
-              className: "tm-input",
-              value: question,
-              onChange: e => setQuestion(e.target.value),
-              placeholder: "O que Jesus quis dizer em Mateus 5?",
-              rows: 2,
-              onKeyDown: e => {
-                if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) ask();
-              }
-            }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-              className: "tm-qrow",
-              children: [/*#__PURE__*/_jsxDEV("div", {
-                className: "tm-hint",
-                children: [/*#__PURE__*/_jsxDEV("button", {
-                  className: "tm-mic" + (isListening ? " on" : ""),
-                  onClick: toggleMic,
-                  title: "Falar a pergunta",
-                  children: /*#__PURE__*/_jsxDEV(Icon, {
-                    name: "mic",
-                    size: 16
-                  }, void 0, false)
-                }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                  children: isListening ? "Ouvindo… pode falar" : "Faça sua pergunta\nsobre a Bíblia ou teologia"
-                }, void 0, false)]
-              }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-                className: "tm-send",
-                onClick: () => ask(),
-                disabled: loading || !question.trim(),
-                children: [/*#__PURE__*/_jsxDEV(Icon, {
-                  name: "send",
-                  size: 17
-                }, void 0, false), " Enviar pergunta"]
-              }, void 0, true)]
-            }, void 0, true), micNote && /*#__PURE__*/_jsxDEV("div", {
-              className: "tm-micnote",
-              children: micNote
-            }, void 0, false)]
-          }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-            className: "tm-pills",
-            children: FORMATS.map(f => /*#__PURE__*/_jsxDEV("button", {
-              className: "tm-pill" + (format === f.id ? " sel" : ""),
-              onClick: () => setFormat(f.id),
-              children: [/*#__PURE__*/_jsxDEV(Icon, {
-                name: f.icon,
-                size: 14
-              }, void 0, false), " ", f.label]
-            }, f.id, true))
-          }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-            className: "tm-section",
-            children: /*#__PURE__*/_jsxDEV("span", {
-              className: "tm-section-t",
-              children: "Recursos rápidos"
-            }, void 0, false)
-          }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-            className: "tm-res",
-            children: resources.map(r => {
-              const off = r.need && !answer || r.disabled;
-              return /*#__PURE__*/_jsxDEV("button", {
-                className: "tm-restile" + (r.active ? " act" : "") + (off ? " off" : ""),
-                onClick: () => !off && r.onClick(),
-                children: [r.id === "salvar" ? /*#__PURE__*/_jsxDEV(Icon, {
-                  name: "heart",
-                  size: 20,
-                  fill: isFav ? "currentColor" : "none"
-                }, void 0, false) : /*#__PURE__*/_jsxDEV(Icon, {
-                  name: r.icon,
-                  size: 20
-                }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                  children: r.label.split("\n").map((l, i) => /*#__PURE__*/_jsxDEV("span", {
-                    children: [l, /*#__PURE__*/_jsxDEV("br", {}, void 0, false)]
-                  }, i, true))
-                }, void 0, false)]
-              }, r.id, true);
-            })
-          }, void 0, false), loading && /*#__PURE__*/_jsxDEV("div", {
-            className: "tm-card tm-answer",
-            children: /*#__PURE__*/_jsxDEV("div", {
-              className: "tm-loading",
-              children: [/*#__PURE__*/_jsxDEV("span", {
-                className: "tm-dot"
-              }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                className: "tm-dot"
-              }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                className: "tm-dot"
-              }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-                children: "Buscando à luz das Escrituras…"
-              }, void 0, false)]
-            }, void 0, true)
-          }, void 0, false), !loading && error && /*#__PURE__*/_jsxDEV("div", {
-            className: "tm-card tm-answer",
-            children: /*#__PURE__*/_jsxDEV("p", {
-              className: "tm-err",
-              children: error
-            }, void 0, false)
-          }, void 0, false), !loading && !error && answer && /*#__PURE__*/_jsxDEV("div", {
-            className: "tm-card tm-answer",
-            children: [/*#__PURE__*/_jsxDEV("div", {
-              className: "tm-answer-head",
-              children: [/*#__PURE__*/_jsxDEV("span", {
-                className: "tm-spark",
-                children: [/*#__PURE__*/_jsxDEV(Icon, {
-                  name: "sparkles",
-                  size: 15
-                }, void 0, false), " Resposta"]
-              }, void 0, true), /*#__PURE__*/_jsxDEV("span", {
-                className: "tm-tag",
-                children: FORMAT_LABEL[answer.format]
-              }, void 0, false)]
-            }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-              className: "tm-qasked",
-              children: ["“", answer.question, "”"]
-            }, void 0, true), /*#__PURE__*/_jsxDEV(Markdown, {
-              text: answer.resposta
-            }, void 0, false), answer.referencia && /*#__PURE__*/_jsxDEV("div", {
-              className: "tm-ref",
-              children: [/*#__PURE__*/_jsxDEV(Icon, {
-                name: "book-open",
-                size: 16
-              }, void 0, false), " ", answer.referencia]
-            }, void 0, true)]
-          }, void 0, true), !loading && !error && !answer && /*#__PURE__*/_jsxDEV("div", {
-            className: "tm-card tm-answer",
-            children: [/*#__PURE__*/_jsxDEV("div", {
-              className: "tm-answer-head",
-              children: [/*#__PURE__*/_jsxDEV("span", {
-                className: "tm-spark",
-                children: [/*#__PURE__*/_jsxDEV(Icon, {
-                  name: "sparkles",
-                  size: 15
-                }, void 0, false), " Resposta em destaque"]
-              }, void 0, true), /*#__PURE__*/_jsxDEV("span", {
-                className: "tm-tag",
-                children: "Curta"
-              }, void 0, false)]
-            }, void 0, true), /*#__PURE__*/_jsxDEV("p", {
-              className: "tm-p",
-              children: "Em Mateus 5, Jesus inicia o Sermão do Monte ensinando sobre o Reino de Deus. Ele apresenta princípios como humildade, justiça, misericórdia e pureza do coração, mostrando o caminho para uma vida que agrada a Deus."
-            }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-              className: "tm-ref",
-              children: [/*#__PURE__*/_jsxDEV(Icon, {
-                name: "book-open",
-                size: 16
-              }, void 0, false), " Mateus 5:1-12"]
-            }, void 0, true)]
-          }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-            className: "tm-footnote",
-            children: ["O objetivo final da teologia não é apenas informar a mente,", /*#__PURE__*/_jsxDEV("br", {}, void 0, false), "mas transformar a vida à luz da Palavra de Deus."]
-          }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-            className: "tm-version",
-            children: ["v", APP_VERSION]
-          }, void 0, true)]
-        }, void 0, true), tab === "explorar" && /*#__PURE__*/_jsxDEV(_Fragment, {
-          children: [/*#__PURE__*/_jsxDEV("div", {
-            className: "tm-title sm",
-            children: /*#__PURE__*/_jsxDEV("span", {
-              className: "tm-title-2",
-              children: "Explorar"
-            }, void 0, false)
-          }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-            className: "tm-lead",
-            children: "Toque em uma pergunta para receber a resposta."
-          }, void 0, false), EXPLORE.map(g => /*#__PURE__*/_jsxDEV("div", {
-            className: "tm-expgroup",
-            children: [/*#__PURE__*/_jsxDEV("div", {
-              className: "tm-expcat",
-              children: g.cat
-            }, void 0, false), g.items.map(q => /*#__PURE__*/_jsxDEV("button", {
-              className: "tm-expitem",
-              onClick: () => {
-                setQuestion(q);
-                setTab("inicio");
-                ask(q);
-              },
-              children: [/*#__PURE__*/_jsxDEV("span", {
-                children: q
-              }, void 0, false), /*#__PURE__*/_jsxDEV(Icon, {
-                name: "chevron-right",
-                size: 16
-              }, void 0, false)]
-            }, q, true))]
-          }, g.cat, true))]
-        }, void 0, true), tab === "favoritos" && /*#__PURE__*/_jsxDEV(_Fragment, {
-          children: [/*#__PURE__*/_jsxDEV("div", {
-            className: "tm-title sm",
-            children: /*#__PURE__*/_jsxDEV("span", {
-              className: "tm-title-2",
-              children: "Favoritos"
-            }, void 0, false)
-          }, void 0, false), favorites.length === 0 && /*#__PURE__*/_jsxDEV("div", {
-            className: "tm-empty",
-            children: [/*#__PURE__*/_jsxDEV(Icon, {
-              name: "heart",
-              size: 28
-            }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-              children: ["Você ainda não favoritou nenhuma resposta.", /*#__PURE__*/_jsxDEV("br", {}, void 0, false), "Toque no coração “Favoritar” para guardá-la aqui."]
-            }, void 0, true)]
-          }, void 0, true), favorites.map(f => /*#__PURE__*/_jsxDEV("div", {
-            className: "tm-favcard",
-            children: [/*#__PURE__*/_jsxDEV("button", {
-              className: "tm-favmain",
-              onClick: () => openEntry(f),
-              children: [/*#__PURE__*/_jsxDEV("div", {
-                className: "tm-favq",
-                children: f.question
-              }, void 0, false), f.referencia && /*#__PURE__*/_jsxDEV("div", {
-                className: "tm-favref",
-                children: [/*#__PURE__*/_jsxDEV(Icon, {
-                  name: "book-open",
-                  size: 13
-                }, void 0, false), " ", f.referencia]
-              }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                className: "tm-favsnip",
-                children: [stripMarkdown(f.resposta).slice(0, 120), "…"]
-              }, void 0, true)]
-            }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-              className: "tm-favdel",
-              onClick: () => removeFav(f.id),
-              children: /*#__PURE__*/_jsxDEV(Icon, {
-                name: "trash",
-                size: 16
-              }, void 0, false)
-            }, void 0, false)]
-          }, f.id, true))]
-        }, void 0, true), tab === "perfil" && /*#__PURE__*/_jsxDEV(_Fragment, {
-          children: [/*#__PURE__*/_jsxDEV("div", {
-            className: "tm-title sm",
-            children: /*#__PURE__*/_jsxDEV("span", {
-              className: "tm-title-2",
-              children: "Perfil"
-            }, void 0, false)
-          }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-            className: "tm-card tm-profile",
-            children: [/*#__PURE__*/_jsxDEV(Emblem, {
-              size: 64
-            }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-              className: "tm-pname",
-              children: "Teologia em Minutos"
-            }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-              className: "tm-pchurch",
-              children: "Igreja Vidas"
-            }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-              className: "tm-pdesc",
-              children: "Assistente de Bíblia e Teologia com fidelidade às Escrituras, clareza pastoral e aplicação prática."
-            }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-              className: "tm-pbadges",
-              children: ["Evangélica", "Conservadora", "Cristocêntrica", "Batista tradicional"].map(b => /*#__PURE__*/_jsxDEV("span", {
-                className: "tm-pbadge",
-                children: b
-              }, b, false))
-            }, void 0, false)]
-          }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-            className: "tm-card tm-pref",
-            children: [/*#__PURE__*/_jsxDEV("div", {
-              className: "tm-pref-t",
-              children: "Formato padrão das respostas"
-            }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-              className: "tm-pills",
-              children: FORMATS.map(f => /*#__PURE__*/_jsxDEV("button", {
-                className: "tm-pill" + (format === f.id ? " sel" : ""),
-                onClick: () => setFormat(f.id),
-                children: [/*#__PURE__*/_jsxDEV(Icon, {
-                  name: f.icon,
-                  size: 14
-                }, void 0, false), " ", f.label]
-              }, f.id, true))
-            }, void 0, false)]
-          }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-            className: "tm-pstats",
-            children: [/*#__PURE__*/_jsxDEV("div", {
-              children: [/*#__PURE__*/_jsxDEV("b", {
-                children: favorites.length
-              }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                children: "Favoritos"
-              }, void 0, false)]
-            }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-              children: [/*#__PURE__*/_jsxDEV("b", {
-                children: history.length
-              }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                children: "Perguntas"
-              }, void 0, false)]
-            }, void 0, true)]
-          }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-            className: "tm-card tm-sync",
-            children: [/*#__PURE__*/_jsxDEV("div", {
-              className: "tm-pref-t",
-              children: "Sincronizar favoritos"
-            }, void 0, false), syncCode ? /*#__PURE__*/_jsxDEV(_Fragment, {
-              children: [/*#__PURE__*/_jsxDEV("p", {
-                className: "tm-sync-status on",
-                children: ["Sincronização ativa · código: ", /*#__PURE__*/_jsxDEV("b", {
-                  children: syncCode
-                }, void 0, false)]
-              }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                className: "tm-sync-btns",
-                children: [/*#__PURE__*/_jsxDEV("button", {
-                  className: "tm-syncbtn",
-                  onClick: () => {
-                    setSyncMsg("Sincronizando…");
-                    syncAgora(syncCode, false);
-                  },
-                  children: "Sincronizar agora"
-                }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-                  className: "tm-syncbtn ghost",
-                  onClick: desconectarSync,
-                  children: "Desconectar"
-                }, void 0, false)]
-              }, void 0, true)]
-            }, void 0, true) : /*#__PURE__*/_jsxDEV(_Fragment, {
-              children: [/*#__PURE__*/_jsxDEV("p", {
-                className: "tm-sync-status",
-                children: "Não sincronizado — os favoritos ficam só neste aparelho."
-              }, void 0, false), /*#__PURE__*/_jsxDEV("input", {
-                className: "tm-sync-input",
-                value: syncInput,
-                onChange: e => setSyncInput(e.target.value),
-                placeholder: "Digite ou gere um código",
-                autoCapitalize: "off",
-                autoCorrect: "off",
-                spellCheck: false
-              }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-                className: "tm-sync-btns",
-                children: [/*#__PURE__*/_jsxDEV("button", {
-                  className: "tm-syncbtn",
-                  onClick: conectarSync,
-                  children: "Conectar"
-                }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-                  className: "tm-syncbtn ghost",
-                  onClick: () => setSyncInput("vidas-" + Math.random().toString(36).slice(2, 6).toUpperCase()),
-                  children: "Gerar código"
-                }, void 0, false)]
-              }, void 0, true), /*#__PURE__*/_jsxDEV("p", {
-                className: "tm-sync-hint",
-                children: "Use o mesmo código nos dois aparelhos (celular e computador) para compartilhar os favoritos."
-              }, void 0, false)]
-            }, void 0, true), syncMsg && /*#__PURE__*/_jsxDEV("p", {
-              className: "tm-sync-msg",
-              children: syncMsg
-            }, void 0, false)]
-          }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-            className: "tm-version",
-            children: ["Teologia em Minutos · v", APP_VERSION]
-          }, void 0, true)]
-        }, void 0, true)]
-      }, void 0, true), showHistory && /*#__PURE__*/_jsxDEV("div", {
-        className: "tm-overlay",
-        onClick: () => setShowHistory(false),
-        children: /*#__PURE__*/_jsxDEV("div", {
-          className: "tm-sheet",
-          onClick: e => e.stopPropagation(),
-          children: [/*#__PURE__*/_jsxDEV("div", {
-            className: "tm-sheet-h",
-            children: [/*#__PURE__*/_jsxDEV("span", {
-              children: [/*#__PURE__*/_jsxDEV(Icon, {
-                name: "clock",
-                size: 16
-              }, void 0, false), " Histórico"]
-            }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-              onClick: () => setShowHistory(false),
-              children: /*#__PURE__*/_jsxDEV(Icon, {
-                name: "x",
-                size: 18
-              }, void 0, false)
-            }, void 0, false)]
-          }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-            className: "tm-sheet-body",
-            children: [history.length === 0 && /*#__PURE__*/_jsxDEV("div", {
-              className: "tm-empty sm",
-              children: /*#__PURE__*/_jsxDEV("p", {
-                children: "Nenhuma pergunta ainda."
-              }, void 0, false)
-            }, void 0, false), history.map(h => /*#__PURE__*/_jsxDEV("button", {
-              className: "tm-histitem",
-              onClick: () => openEntry(h),
-              children: [/*#__PURE__*/_jsxDEV(Icon, {
-                name: "message",
-                size: 15
-              }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                children: h.question
-              }, void 0, false)]
-            }, h.id, true))]
-          }, void 0, true)]
-        }, void 0, true)
-      }, void 0, false), versesOpen && answer && /*#__PURE__*/_jsxDEV("div", {
-        className: "tm-overlay",
-        onClick: () => setVersesOpen(false),
-        children: /*#__PURE__*/_jsxDEV("div", {
-          className: "tm-sheet",
-          onClick: e => e.stopPropagation(),
-          children: [/*#__PURE__*/_jsxDEV("div", {
-            className: "tm-sheet-h",
-            children: [/*#__PURE__*/_jsxDEV("span", {
-              children: [/*#__PURE__*/_jsxDEV(Icon, {
-                name: "book-marked",
-                size: 16
-              }, void 0, false), " Versículos relacionados"]
-            }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-              onClick: () => setVersesOpen(false),
-              children: /*#__PURE__*/_jsxDEV(Icon, {
-                name: "x",
-                size: 18
-              }, void 0, false)
-            }, void 0, false)]
-          }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-            className: "tm-sheet-body",
-            children: [/*#__PURE__*/_jsxDEV("div", {
-              className: "tm-vsubject",
-              children: ["“", answer.question, "”"]
-            }, void 0, true), versesLoading && /*#__PURE__*/_jsxDEV("div", {
-              className: "tm-vloading",
-              children: "Reunindo passagens…"
-            }, void 0, false), !versesLoading && verses && verses.length > 0 && verses.map((v, i) => /*#__PURE__*/_jsxDEV("div", {
-              className: "tm-verse",
-              children: [/*#__PURE__*/_jsxDEV("div", {
-                className: "tm-verse-ref",
-                children: [/*#__PURE__*/_jsxDEV(Icon, {
-                  name: "book-open",
-                  size: 13
-                }, void 0, false), " ", v.ref]
-              }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                className: "tm-verse-txt",
-                children: v.texto
-              }, void 0, false)]
-            }, i, true)), !versesLoading && verses && verses.length === 0 && /*#__PURE__*/_jsxDEV("div", {
-              className: "tm-vloading",
-              children: "Nenhum versículo encontrado."
-            }, void 0, false)]
-          }, void 0, true)]
-        }, void 0, true)
-      }, void 0, false), shareOpen && answer && /*#__PURE__*/_jsxDEV("div", {
-        className: "tm-overlay",
-        onClick: () => setShareOpen(false),
-        children: /*#__PURE__*/_jsxDEV("div", {
-          className: "tm-sheet",
-          onClick: e => e.stopPropagation(),
-          children: [/*#__PURE__*/_jsxDEV("div", {
-            className: "tm-sheet-h",
-            children: [/*#__PURE__*/_jsxDEV("span", {
-              children: [/*#__PURE__*/_jsxDEV(Icon, {
-                name: "share2",
-                size: 16
-              }, void 0, false), " Compartilhar"]
-            }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-              onClick: () => setShareOpen(false),
-              children: /*#__PURE__*/_jsxDEV(Icon, {
-                name: "x",
-                size: 18
-              }, void 0, false)
-            }, void 0, false)]
-          }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-            className: "tm-sheet-body",
-            children: [/*#__PURE__*/_jsxDEV("textarea", {
-              className: "tm-sharebox",
-              readOnly: true,
-              value: shareText()
-            }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-              className: "tm-copybtn",
-              onClick: doCopy,
-              children: copied ? /*#__PURE__*/_jsxDEV(_Fragment, {
-                children: [/*#__PURE__*/_jsxDEV(Icon, {
-                  name: "check",
-                  size: 16
-                }, void 0, false), " Copiado!"]
-              }, void 0, true) : /*#__PURE__*/_jsxDEV(_Fragment, {
-                children: [/*#__PURE__*/_jsxDEV(Icon, {
-                  name: "share2",
-                  size: 16
-                }, void 0, false), " Copiar texto"]
-              }, void 0, true)
-            }, void 0, false)]
-          }, void 0, true)]
-        }, void 0, true)
-      }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-        className: "tm-nav",
-        children: [/*#__PURE__*/_jsxDEV("button", {
-          className: "tm-navbtn" + (tab === "inicio" ? " on" : ""),
-          onClick: () => setTab("inicio"),
-          children: [/*#__PURE__*/_jsxDEV(Icon, {
-            name: "home",
-            size: 20
-          }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-            children: "Início"
-          }, void 0, false)]
-        }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-          className: "tm-navbtn" + (tab === "explorar" ? " on" : ""),
-          onClick: () => setTab("explorar"),
-          children: [/*#__PURE__*/_jsxDEV(Icon, {
-            name: "search",
-            size: 20
-          }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-            children: "Explorar"
-          }, void 0, false)]
-        }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-          className: "tm-navplus",
-          onClick: newQuestion,
-          children: /*#__PURE__*/_jsxDEV(Icon, {
-            name: "plus",
-            size: 24
-          }, void 0, false)
-        }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-          className: "tm-navbtn" + (tab === "favoritos" ? " on" : ""),
-          onClick: () => setTab("favoritos"),
-          children: [/*#__PURE__*/_jsxDEV(Icon, {
-            name: "heart",
-            size: 20
-          }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-            children: "Favoritos"
-          }, void 0, false)]
-        }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-          className: "tm-navbtn" + (tab === "perfil" ? " on" : ""),
-          onClick: () => setTab("perfil"),
-          children: [/*#__PURE__*/_jsxDEV(Icon, {
-            name: "user",
-            size: 20
-          }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-            children: "Perfil"
-          }, void 0, false)]
-        }, void 0, true)]
-      }, void 0, true)]
-    }, void 0, true)
-  }, void 0, false);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "tm-root"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "tm-phone"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "tm-scroll"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "tm-header"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "tm-greet"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "tm-avatar"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "user",
+    size: 18
+  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "tm-greet-1"
+  }, "Olá, irmão(ã)"), /*#__PURE__*/React.createElement("div", {
+    className: "tm-greet-2"
+  }, "Que Deus abençoe o seu dia!"))), /*#__PURE__*/React.createElement("div", {
+    className: "tm-headright"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "tm-theme-btn",
+    onClick: () => setTheme(t => t === "dark" ? "light" : "dark"),
+    title: "Alternar modo claro/escuro"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: theme === "dark" ? "sun" : "moon",
+    size: 18
+  })), /*#__PURE__*/React.createElement(Emblem, null))), tab === "inicio" && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "tm-title"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "tm-title-1"
+  }, "Teologia"), /*#__PURE__*/React.createElement("span", {
+    className: "tm-title-2"
+  }, "em Minutos"), /*#__PURE__*/React.createElement("span", {
+    className: "tm-rule"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "tm-diamond"
+  }, "◆"))), /*#__PURE__*/React.createElement("div", {
+    className: "tm-card tm-qcard"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "tm-quote"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "quote",
+    size: 30
+  })), /*#__PURE__*/React.createElement("textarea", {
+    ref: inputRef,
+    className: "tm-input",
+    value: question,
+    onChange: e => setQuestion(e.target.value),
+    placeholder: "O que Jesus quis dizer em Mateus 5?",
+    rows: 2,
+    onKeyDown: e => {
+      if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) ask();
+    }
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "tm-qrow"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "tm-hint"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "tm-mic" + (isListening ? " on" : ""),
+    onClick: toggleMic,
+    title: "Falar a pergunta"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "mic",
+    size: 16
+  })), /*#__PURE__*/React.createElement("span", null, isListening ? "Ouvindo… pode falar" : "Faça sua pergunta\nsobre a Bíblia ou teologia")), /*#__PURE__*/React.createElement("button", {
+    className: "tm-send",
+    onClick: () => ask(),
+    disabled: loading || !question.trim()
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "send",
+    size: 17
+  }), " Enviar pergunta")), micNote && /*#__PURE__*/React.createElement("div", {
+    className: "tm-micnote"
+  }, micNote)), /*#__PURE__*/React.createElement("div", {
+    className: "tm-pills"
+  }, FORMATS.map(f => /*#__PURE__*/React.createElement("button", {
+    key: f.id,
+    className: "tm-pill" + (format === f.id ? " sel" : ""),
+    onClick: () => setFormat(f.id)
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: f.icon,
+    size: 14
+  }), " ", f.label))), /*#__PURE__*/React.createElement("div", {
+    className: "tm-section"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "tm-section-t"
+  }, "Recursos rápidos")), /*#__PURE__*/React.createElement("div", {
+    className: "tm-res"
+  }, resources.map(r => {
+    const off = r.need && !answer || r.disabled;
+    return /*#__PURE__*/React.createElement("button", {
+      key: r.id,
+      className: "tm-restile" + (r.active ? " act" : "") + (off ? " off" : ""),
+      onClick: () => !off && r.onClick()
+    }, r.id === "salvar" ? /*#__PURE__*/React.createElement(Icon, {
+      name: "heart",
+      size: 20,
+      fill: isFav ? "currentColor" : "none"
+    }) : /*#__PURE__*/React.createElement(Icon, {
+      name: r.icon,
+      size: 20
+    }), /*#__PURE__*/React.createElement("span", null, r.label.split("\n").map((l, i) => /*#__PURE__*/React.createElement("span", {
+      key: i
+    }, l, /*#__PURE__*/React.createElement("br", null)))));
+  })), loading && /*#__PURE__*/React.createElement("div", {
+    className: "tm-card tm-answer"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "tm-loading"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "tm-dot"
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "tm-dot"
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "tm-dot"
+  }), /*#__PURE__*/React.createElement("div", null, "Buscando à luz das Escrituras…"))), !loading && error && /*#__PURE__*/React.createElement("div", {
+    className: "tm-card tm-answer"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "tm-err"
+  }, error)), !loading && !error && answer && /*#__PURE__*/React.createElement("div", {
+    className: "tm-card tm-answer"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "tm-answer-head"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "tm-spark"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "sparkles",
+    size: 15
+  }), " Resposta"), /*#__PURE__*/React.createElement("span", {
+    className: "tm-tag"
+  }, FORMAT_LABEL[answer.format])), /*#__PURE__*/React.createElement("div", {
+    className: "tm-qasked"
+  }, "“", answer.question, "”"), /*#__PURE__*/React.createElement(Markdown, {
+    text: answer.resposta
+  }), answer.referencia && /*#__PURE__*/React.createElement("div", {
+    className: "tm-ref"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "book-open",
+    size: 16
+  }), " ", answer.referencia)), !loading && !error && !answer && /*#__PURE__*/React.createElement("div", {
+    className: "tm-card tm-answer"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "tm-answer-head"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "tm-spark"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "sparkles",
+    size: 15
+  }), " Resposta em destaque"), /*#__PURE__*/React.createElement("span", {
+    className: "tm-tag"
+  }, "Curta")), /*#__PURE__*/React.createElement("p", {
+    className: "tm-p"
+  }, "Em Mateus 5, Jesus inicia o Sermão do Monte ensinando sobre o Reino de Deus. Ele apresenta princípios como humildade, justiça, misericórdia e pureza do coração, mostrando o caminho para uma vida que agrada a Deus."), /*#__PURE__*/React.createElement("div", {
+    className: "tm-ref"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "book-open",
+    size: 16
+  }), " Mateus 5:1-12")), /*#__PURE__*/React.createElement("div", {
+    className: "tm-footnote"
+  }, "O objetivo final da teologia não é apenas informar a mente,", /*#__PURE__*/React.createElement("br", null), "mas transformar a vida à luz da Palavra de Deus."), /*#__PURE__*/React.createElement("div", {
+    className: "tm-version"
+  }, "v", APP_VERSION)), tab === "explorar" && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "tm-title sm"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "tm-title-2"
+  }, "Explorar")), /*#__PURE__*/React.createElement("p", {
+    className: "tm-lead"
+  }, "Toque em uma pergunta para receber a resposta."), EXPLORE.map(g => /*#__PURE__*/React.createElement("div", {
+    key: g.cat,
+    className: "tm-expgroup"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "tm-expcat"
+  }, g.cat), g.items.map(q => /*#__PURE__*/React.createElement("button", {
+    key: q,
+    className: "tm-expitem",
+    onClick: () => {
+      setQuestion(q);
+      setTab("inicio");
+      ask(q);
+    }
+  }, /*#__PURE__*/React.createElement("span", null, q), /*#__PURE__*/React.createElement(Icon, {
+    name: "chevron-right",
+    size: 16
+  })))))), tab === "favoritos" && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "tm-title sm"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "tm-title-2"
+  }, "Favoritos")), favorites.length === 0 && /*#__PURE__*/React.createElement("div", {
+    className: "tm-empty"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "heart",
+    size: 28
+  }), /*#__PURE__*/React.createElement("p", null, "Você ainda não favoritou nenhuma resposta.", /*#__PURE__*/React.createElement("br", null), "Toque no coração “Favoritar” para guardá-la aqui.")), favorites.map(f => /*#__PURE__*/React.createElement("div", {
+    key: f.id,
+    className: "tm-favcard"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "tm-favmain",
+    onClick: () => openEntry(f)
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "tm-favq"
+  }, f.question), f.referencia && /*#__PURE__*/React.createElement("div", {
+    className: "tm-favref"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "book-open",
+    size: 13
+  }), " ", f.referencia), /*#__PURE__*/React.createElement("div", {
+    className: "tm-favsnip"
+  }, stripMarkdown(f.resposta).slice(0, 120), "…")), /*#__PURE__*/React.createElement("button", {
+    className: "tm-favdel",
+    onClick: () => removeFav(f.id)
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "trash",
+    size: 16
+  }))))), tab === "perfil" && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "tm-title sm"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "tm-title-2"
+  }, "Perfil")), /*#__PURE__*/React.createElement("div", {
+    className: "tm-card tm-profile"
+  }, /*#__PURE__*/React.createElement(Emblem, {
+    size: 64
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "tm-pname"
+  }, "Teologia em Minutos"), /*#__PURE__*/React.createElement("div", {
+    className: "tm-pchurch"
+  }, "Igreja Vidas"), /*#__PURE__*/React.createElement("p", {
+    className: "tm-pdesc"
+  }, "Assistente de Bíblia e Teologia com fidelidade às Escrituras, clareza pastoral e aplicação prática."), /*#__PURE__*/React.createElement("div", {
+    className: "tm-pbadges"
+  }, ["Evangélica", "Conservadora", "Cristocêntrica", "Batista tradicional"].map(b => /*#__PURE__*/React.createElement("span", {
+    key: b,
+    className: "tm-pbadge"
+  }, b)))), /*#__PURE__*/React.createElement("div", {
+    className: "tm-card tm-pref"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "tm-pref-t"
+  }, "Formato padrão das respostas"), /*#__PURE__*/React.createElement("div", {
+    className: "tm-pills"
+  }, FORMATS.map(f => /*#__PURE__*/React.createElement("button", {
+    key: f.id,
+    className: "tm-pill" + (format === f.id ? " sel" : ""),
+    onClick: () => setFormat(f.id)
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: f.icon,
+    size: 14
+  }), " ", f.label)))), /*#__PURE__*/React.createElement("div", {
+    className: "tm-pstats"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("b", null, favorites.length), /*#__PURE__*/React.createElement("span", null, "Favoritos")), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("b", null, history.length), /*#__PURE__*/React.createElement("span", null, "Perguntas"))), /*#__PURE__*/React.createElement("div", {
+    className: "tm-card tm-sync"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "tm-pref-t"
+  }, "Sincronizar favoritos"), syncCode ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("p", {
+    className: "tm-sync-status on"
+  }, "Sincronização ativa · código: ", /*#__PURE__*/React.createElement("b", null, syncCode)), /*#__PURE__*/React.createElement("div", {
+    className: "tm-sync-btns"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "tm-syncbtn",
+    onClick: () => {
+      setSyncMsg("Sincronizando…");
+      syncAgora(syncCode, false);
+    }
+  }, "Sincronizar agora"), /*#__PURE__*/React.createElement("button", {
+    className: "tm-syncbtn ghost",
+    onClick: desconectarSync
+  }, "Desconectar"))) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("p", {
+    className: "tm-sync-status"
+  }, "Não sincronizado — os favoritos ficam só neste aparelho."), /*#__PURE__*/React.createElement("input", {
+    className: "tm-sync-input",
+    value: syncInput,
+    onChange: e => setSyncInput(e.target.value),
+    placeholder: "Digite ou gere um código",
+    autoCapitalize: "off",
+    autoCorrect: "off",
+    spellCheck: false
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "tm-sync-btns"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "tm-syncbtn",
+    onClick: conectarSync
+  }, "Conectar"), /*#__PURE__*/React.createElement("button", {
+    className: "tm-syncbtn ghost",
+    onClick: () => setSyncInput("vidas-" + Math.random().toString(36).slice(2, 6).toUpperCase())
+  }, "Gerar código")), /*#__PURE__*/React.createElement("p", {
+    className: "tm-sync-hint"
+  }, "Use o mesmo código nos dois aparelhos (celular e computador) para compartilhar os favoritos.")), syncMsg && /*#__PURE__*/React.createElement("p", {
+    className: "tm-sync-msg"
+  }, syncMsg)), /*#__PURE__*/React.createElement("div", {
+    className: "tm-version"
+  }, "Teologia em Minutos · v", APP_VERSION))), showHistory && /*#__PURE__*/React.createElement("div", {
+    className: "tm-overlay",
+    onClick: () => setShowHistory(false)
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "tm-sheet",
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "tm-sheet-h"
+  }, /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement(Icon, {
+    name: "clock",
+    size: 16
+  }), " Histórico"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => setShowHistory(false)
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "x",
+    size: 18
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "tm-sheet-body"
+  }, history.length === 0 && /*#__PURE__*/React.createElement("div", {
+    className: "tm-empty sm"
+  }, /*#__PURE__*/React.createElement("p", null, "Nenhuma pergunta ainda.")), history.map(h => /*#__PURE__*/React.createElement("button", {
+    key: h.id,
+    className: "tm-histitem",
+    onClick: () => openEntry(h)
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "message",
+    size: 15
+  }), /*#__PURE__*/React.createElement("span", null, h.question)))))), versesOpen && answer && /*#__PURE__*/React.createElement("div", {
+    className: "tm-overlay",
+    onClick: () => setVersesOpen(false)
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "tm-sheet",
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "tm-sheet-h"
+  }, /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement(Icon, {
+    name: "book-marked",
+    size: 16
+  }), " Versículos relacionados"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => setVersesOpen(false)
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "x",
+    size: 18
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "tm-sheet-body"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "tm-vsubject"
+  }, "“", answer.question, "”"), versesLoading && /*#__PURE__*/React.createElement("div", {
+    className: "tm-vloading"
+  }, "Reunindo passagens…"), !versesLoading && verses && verses.length > 0 && verses.map((v, i) => /*#__PURE__*/React.createElement("div", {
+    className: "tm-verse",
+    key: i
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "tm-verse-ref"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "book-open",
+    size: 13
+  }), " ", v.ref), /*#__PURE__*/React.createElement("div", {
+    className: "tm-verse-txt"
+  }, v.texto))), !versesLoading && verses && verses.length === 0 && /*#__PURE__*/React.createElement("div", {
+    className: "tm-vloading"
+  }, "Nenhum versículo encontrado.")))), shareOpen && answer && /*#__PURE__*/React.createElement("div", {
+    className: "tm-overlay",
+    onClick: () => setShareOpen(false)
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "tm-sheet",
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "tm-sheet-h"
+  }, /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement(Icon, {
+    name: "share2",
+    size: 16
+  }), " Compartilhar"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => setShareOpen(false)
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "x",
+    size: 18
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "tm-sheet-body"
+  }, /*#__PURE__*/React.createElement("textarea", {
+    className: "tm-sharebox",
+    readOnly: true,
+    value: shareText()
+  }), /*#__PURE__*/React.createElement("button", {
+    className: "tm-copybtn",
+    onClick: doCopy
+  }, copied ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Icon, {
+    name: "check",
+    size: 16
+  }), " Copiado!") : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Icon, {
+    name: "share2",
+    size: 16
+  }), " Copiar texto"))))), /*#__PURE__*/React.createElement("div", {
+    className: "tm-nav"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "tm-navbtn" + (tab === "inicio" ? " on" : ""),
+    onClick: () => setTab("inicio")
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "home",
+    size: 20
+  }), /*#__PURE__*/React.createElement("span", null, "Início")), /*#__PURE__*/React.createElement("button", {
+    className: "tm-navbtn" + (tab === "explorar" ? " on" : ""),
+    onClick: () => setTab("explorar")
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "search",
+    size: 20
+  }), /*#__PURE__*/React.createElement("span", null, "Explorar")), /*#__PURE__*/React.createElement("button", {
+    className: "tm-navplus",
+    onClick: newQuestion
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "plus",
+    size: 24
+  })), /*#__PURE__*/React.createElement("button", {
+    className: "tm-navbtn" + (tab === "favoritos" ? " on" : ""),
+    onClick: () => setTab("favoritos")
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "heart",
+    size: 20
+  }), /*#__PURE__*/React.createElement("span", null, "Favoritos")), /*#__PURE__*/React.createElement("button", {
+    className: "tm-navbtn" + (tab === "perfil" ? " on" : ""),
+    onClick: () => setTab("perfil")
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "user",
+    size: 20
+  }), /*#__PURE__*/React.createElement("span", null, "Perfil")))));
 }
-ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/_jsxDEV(App, {}, void 0, false));
+ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));
 </script>
 </body>
 </html>
