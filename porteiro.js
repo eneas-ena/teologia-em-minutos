@@ -8,6 +8,8 @@
  *
  * Uso no index.html, dentro do <head>:
  *   <script src="porteiro.js" data-app="Nome do App" data-versao="1.0"></script>
+ * Para proteger outro servidor (ex.: um Worker), acrescente
+ *   data-protege="https://nome.eneaspr.workers.dev"   (vários: separados por vírgula)
  * O login ("bispo-auth") é o mesmo dos outros apps pessoais.
  */
 (function () {
@@ -17,6 +19,13 @@
   var eu = document.currentScript;
   var APP = (eu && eu.dataset.app) || "App";
   var VERSAO = (eu && eu.dataset.versao) || "";
+  var PROTEGE = ((eu && eu.dataset.protege) || "").split(",").map(function (s) { return s.trim(); }).filter(Boolean);
+  function protegido(url) {
+    var caminho = "";
+    try { var u = new URL(url, location.href); caminho = u.pathname; url = u.href; } catch (e) {}
+    if (/^\/api\/(ask|sync)\b/.test(caminho)) return true;
+    return PROTEGE.some(function (p) { return url.indexOf(p) === 0; });
+  }
 
   var sb = null, liberar, prontoLogin = new Promise(function (ok) { liberar = ok; });
 
@@ -89,9 +98,7 @@
   var fetchOriginal = window.fetch.bind(window);
   window.fetch = async function (input, init) {
     var url = typeof input === "string" ? input : (input && input.url) || "";
-    var caminho = "";
-    try { caminho = new URL(url, location.href).pathname; } catch (e) {}
-    if (!/^\/api\/(ask|sync)\b/.test(caminho)) return fetchOriginal(input, init);
+    if (!protegido(url)) return fetchOriginal(input, init);
     await prontoLogin;
     var t = await token();
     init = Object.assign({}, init || {});
@@ -100,7 +107,7 @@
     init.headers = h;
     var resp = await fetchOriginal(input, init);
     if (resp.status === 401 || resp.status === 403) {
-      try { var j = await resp.clone().json(); if (j && j.login) mostrarLogin(j.error || "Entre de novo para continuar."); } catch (e) {}
+      try { var j = await resp.clone().json(); if (j && j.login) mostrarLogin(j.error || j.erro || "Entre de novo para continuar."); } catch (e) {}
     }
     return resp;
   };
