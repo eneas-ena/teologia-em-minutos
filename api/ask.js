@@ -62,7 +62,12 @@ const OUTPUT_RULE =
 const VERSES_SYSTEM =
   "Você é um assistente bíblico. Liste de 4 a 6 versículos relacionados ao tema, na tradução Almeida de domínio público. Escreva UM versículo por linha, no formato exato: REFERÊNCIA :: TEXTO (exemplo: João 3:16 :: Porque Deus amou o mundo de tal maneira...). Não use JSON, não use marcadores de lista, não use cercas de código.";
 
+const exigirDono = require("./_porteiro");
+
 module.exports = async (req, res) => {
+  // Só o dono usa este servidor (confere o login antes de qualquer coisa)
+  if (!(await exigirDono(req, res))) return;
+
   if (req.method !== "POST") {
     res.status(405).json({ error: "Método não permitido." });
     return;
